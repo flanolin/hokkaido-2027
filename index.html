@@ -78,8 +78,8 @@
           </div>
         </div>
         <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-          <div class="text-[11px] font-semibold text-emerald-800">實際花費（含已付機票＋9晚住宿＋實記）</div>
-          <div class="text-sm font-bold text-emerald-700 text-right" id="actualTotalDisplay">約 NT$64,122</div>
+          <div class="text-[11px] font-semibold text-emerald-800">累計實際花費（雲端實記）</div>
+          <div class="text-sm font-bold text-emerald-700 text-right" id="actualTotalDisplay">¥0 / NT$0</div>
         </div>
       </div>
 
@@ -604,13 +604,6 @@
       }
     }
 
-    const PREPAID_ITEMS = {
-      'd1-0': { cost: 40480, currency: 'TWD', label: '已付機票 NT$40,480' },
-      'd1-3': { cost: 64600, currency: 'JPY', label: '已付住宿 ¥64,600' },
-      'd7-2': { cost: 27504, currency: 'JPY', label: '已付住宿 ¥27,504' },
-      'd8-3': { cost: 12740, currency: 'JPY', label: '已付住宿 ¥12,740' }
-    };
-
     function getRate() {
       const val = parseFloat(document.getElementById('rateInput').value);
       return Number.isFinite(val) && val > 0 ? val : 0.2255;
@@ -642,15 +635,11 @@
           totalItems++;
           const id = `d${d.day}-${idx}`;
           const rec = itineraryRecords[id];
-          const prepaid = PREPAID_ITEMS[id];
           if (rec && rec.checked) doneItems++;
           if (rec && rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost))) {
             const amt = Number(rec.cost);
             if (rec.currency === 'TWD') totalTwd += amt;
             else totalJpy += amt;
-          } else if (prepaid) {
-            if (prepaid.currency === 'TWD') totalTwd += prepaid.cost;
-            else totalJpy += prepaid.cost;
           }
         });
       });
@@ -668,7 +657,9 @@
         const parts = [];
         if (totalJpy > 0) parts.push(`¥${totalJpy.toLocaleString()}`);
         if (totalTwd > 0) parts.push(`NT$${totalTwd.toLocaleString()}`);
-        totalEl.textContent = `${parts.join(' + ')} (約 NT$${grandTwd.toLocaleString()})`;
+        totalEl.textContent = parts.length > 0
+          ? `${parts.join(' + ')} (約 NT$${grandTwd.toLocaleString()})`
+          : '¥0 / NT$0';
       }
     }
 
@@ -686,15 +677,11 @@
         const itemsHtml = d.items.map((it, idx) => {
           const itemId = `d${d.day}-${idx}`;
           const rec = itineraryRecords[itemId] || { checked: false, cost: '', currency: 'JPY', note: '' };
-          const prepaid = PREPAID_ITEMS[itemId];
           const isChecked = !!rec.checked;
           const hasCost = rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost));
           if (hasCost) {
             if (rec.currency === 'TWD') dayActTwd += Number(rec.cost);
             else dayActJpy += Number(rec.cost);
-          } else if (prepaid) {
-            if (prepaid.currency === 'TWD') dayActTwd += prepaid.cost;
-            else dayActJpy += prepaid.cost;
           }
 
           const badge = CAT_STYLE[it.cat] || 'bg-slate-100 text-slate-800';
@@ -703,7 +690,7 @@
             : '';
           const actualBadge = hasCost
             ? `<span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">實花 ${rec.currency === 'TWD' ? 'NT$' : '¥'}${Number(rec.cost).toLocaleString()}</span>`
-            : (prepaid ? `<span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">✅ ${prepaid.label}</span>` : '');
+            : '';
 
           const urlBtn = it.url
             ? `<a href="${it.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[36px] px-2.5 py-1 text-xs font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">資訊 ↗</a>`
