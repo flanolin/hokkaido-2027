@@ -33,7 +33,7 @@
             🔄 同步中...
           </button>
           <span class="text-xs font-semibold bg-sky-500/20 text-sky-200 border border-sky-400/30 px-2 py-1 rounded-full">
-            1:<span id="headerRate">4.84</span>
+            ¥1 = NT$<span id="headerRate">0.2255</span>
           </span>
         </div>
       </div>
@@ -65,15 +65,21 @@
       <!-- Day Filter Pills -->
       <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="dayFilterBar"></div>
 
-      <!-- Actual Spend & Progress Summary -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm flex items-center justify-between gap-3">
-        <div>
-          <div class="text-[11px] font-semibold text-slate-500">行程打卡進度</div>
-          <div class="text-sm font-bold text-slate-900"><span id="itineraryDoneCount">0 / 0</span> 已完成</div>
+      <!-- Budget vs Actual Spend & Progress Summary -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm space-y-2">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="text-[11px] font-semibold text-slate-500">行程打卡進度</div>
+            <div class="text-sm font-bold text-slate-900"><span id="itineraryDoneCount">0 / 0</span> 已完成</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] font-semibold text-slate-500">全行程預計總花費（含機酒食宿交通）</div>
+            <div class="text-sm font-bold text-slate-700" id="estimatedTotalDisplay">約 NT$138,863</div>
+          </div>
         </div>
-        <div class="text-right">
-          <div class="text-[11px] font-semibold text-slate-500">累計實際花費（雲端同步）</div>
-          <div class="text-sm font-bold text-emerald-700" id="actualTotalDisplay">¥0 / NT$0</div>
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+          <div class="text-[11px] font-semibold text-emerald-800">實際花費（含已付機票＋9晚住宿＋實記）</div>
+          <div class="text-sm font-bold text-emerald-700 text-right" id="actualTotalDisplay">約 NT$64,122</div>
         </div>
       </div>
 
@@ -114,7 +120,7 @@
           <h2 class="text-base font-bold text-slate-900">💴 日圓快速換算台幣</h2>
           <label class="text-xs text-slate-500 flex items-center gap-1">
             匯率
-            <input id="rateInput" type="number" step="0.01" min="1" value="4.84" class="w-16 px-2 py-1 text-right font-semibold border border-slate-300 rounded-lg text-slate-800" />
+            <input id="rateInput" type="number" step="0.0001" min="0.01" value="0.2255" class="w-20 px-2 py-1 text-right font-semibold border border-slate-300 rounded-lg text-slate-800" />
           </label>
         </div>
         <div class="grid grid-cols-2 gap-2">
@@ -481,8 +487,7 @@
       { id: 'b3', name: '成吉思汗 大黑屋（札幌薄野分店）訂位', when: '預計 01/09 (六) 晚餐，建議提前 1 個月預約' },
       { id: 'b4', name: '狸小路 SEIS 居酒屋訂位', when: '預計 01/10 (日) 晚上，假日建議先訂位' },
       { id: 'b5', name: 'JR 北海道特急指定席（札幌➔登別➔函館）', when: '乘車日 1 個月前（12 月中旬）於 JR 官網劃位' },
-      { id: 'b6', name: '黑貓宅急便寄送大行李（札幌 ➔ 函館飯店）', when: '01/14 (四) 早上於 Hotel Vista 櫃檯寄出' },
-      { id: 'b7', name: '✅ ホテルゆもと登別（已訂・10 疊和室 ¥27,504）', when: '已確認預訂（01/14 入住 1 晚・登別牛會席）' }
+      { id: 'b6', name: '黑貓宅急便寄送大行李（札幌 ➔ 函館飯店）', when: '01/14 (四) 早上於 Hotel Vista 櫃檯寄出' }
     ];
 
     const CAT_STYLE = {
@@ -599,9 +604,16 @@
       }
     }
 
+    const PREPAID_ITEMS = {
+      'd1-0': { cost: 40480, currency: 'TWD', label: '已付機票 NT$40,480' },
+      'd1-3': { cost: 64600, currency: 'JPY', label: '已付住宿 ¥64,600' },
+      'd7-2': { cost: 27504, currency: 'JPY', label: '已付住宿 ¥27,504' },
+      'd8-3': { cost: 12740, currency: 'JPY', label: '已付住宿 ¥12,740' }
+    };
+
     function getRate() {
       const val = parseFloat(document.getElementById('rateInput').value);
-      return Number.isFinite(val) && val > 0 ? val : 4.84;
+      return Number.isFinite(val) && val > 0 ? val : 0.2255;
     }
 
     function renderDayFilters() {
@@ -630,11 +642,15 @@
           totalItems++;
           const id = `d${d.day}-${idx}`;
           const rec = itineraryRecords[id];
+          const prepaid = PREPAID_ITEMS[id];
           if (rec && rec.checked) doneItems++;
-          if (rec && rec.cost !== '' && !isNaN(Number(rec.cost))) {
+          if (rec && rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost))) {
             const amt = Number(rec.cost);
             if (rec.currency === 'TWD') totalTwd += amt;
             else totalJpy += amt;
+          } else if (prepaid) {
+            if (prepaid.currency === 'TWD') totalTwd += prepaid.cost;
+            else totalJpy += prepaid.cost;
           }
         });
       });
@@ -642,15 +658,17 @@
       const doneEl = document.getElementById('itineraryDoneCount');
       if (doneEl) doneEl.textContent = `${doneItems} / ${totalItems}`;
 
-      const grandTwd = Math.round(totalTwd + totalJpy / rate);
+      const estTwd = 40480 + Math.round(436289 * rate);
+      const estEl = document.getElementById('estimatedTotalDisplay');
+      if (estEl) estEl.textContent = `約 NT$${estTwd.toLocaleString()}`;
+
+      const grandTwd = Math.round(totalTwd + totalJpy * rate);
       const totalEl = document.getElementById('actualTotalDisplay');
       if (totalEl) {
         const parts = [];
         if (totalJpy > 0) parts.push(`¥${totalJpy.toLocaleString()}`);
         if (totalTwd > 0) parts.push(`NT$${totalTwd.toLocaleString()}`);
-        totalEl.textContent = parts.length > 0
-          ? `${parts.join(' + ')} (約 NT$${grandTwd.toLocaleString()})`
-          : '¥0 / NT$0';
+        totalEl.textContent = `${parts.join(' + ')} (約 NT$${grandTwd.toLocaleString()})`;
       }
     }
 
@@ -668,11 +686,15 @@
         const itemsHtml = d.items.map((it, idx) => {
           const itemId = `d${d.day}-${idx}`;
           const rec = itineraryRecords[itemId] || { checked: false, cost: '', currency: 'JPY', note: '' };
+          const prepaid = PREPAID_ITEMS[itemId];
           const isChecked = !!rec.checked;
           const hasCost = rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost));
           if (hasCost) {
             if (rec.currency === 'TWD') dayActTwd += Number(rec.cost);
             else dayActJpy += Number(rec.cost);
+          } else if (prepaid) {
+            if (prepaid.currency === 'TWD') dayActTwd += prepaid.cost;
+            else dayActJpy += prepaid.cost;
           }
 
           const badge = CAT_STYLE[it.cat] || 'bg-slate-100 text-slate-800';
@@ -681,7 +703,7 @@
             : '';
           const actualBadge = hasCost
             ? `<span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">實花 ${rec.currency === 'TWD' ? 'NT$' : '¥'}${Number(rec.cost).toLocaleString()}</span>`
-            : '';
+            : (prepaid ? `<span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">✅ ${prepaid.label}</span>` : '');
 
           const urlBtn = it.url
             ? `<a href="${it.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[36px] px-2.5 py-1 text-xs font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">資訊 ↗</a>`
@@ -819,9 +841,9 @@
 
     function updateCurrency() {
       const rate = getRate();
-      document.getElementById('headerRate').textContent = rate.toFixed(2).replace(/\.00$/, '');
+      document.getElementById('headerRate').textContent = rate.toString();
       const jpy = parseFloat(document.getElementById('jpyInput').value);
-      const twd = Number.isFinite(jpy) && jpy >= 0 ? Math.round(jpy / rate) : 0;
+      const twd = Number.isFinite(jpy) && jpy >= 0 ? Math.round(jpy * rate) : 0;
       document.getElementById('twdOutput').textContent = `NT$ ${twd.toLocaleString()}`;
       renderItinerary();
     }
