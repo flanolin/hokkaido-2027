@@ -28,9 +28,14 @@
           <h1 class="text-base sm:text-lg font-bold tracking-tight">❄️ 2027 北海道雪國 10 天 9 夜</h1>
           <p class="text-xs text-slate-300">01/08 (五) – 01/17 (日) ｜ 札幌進・函館出 ｜ 2 人</p>
         </div>
-        <span class="shrink-0 text-xs font-semibold bg-sky-500/20 text-sky-200 border border-sky-400/30 px-2.5 py-1 rounded-full">
-          1 TWD = <span id="headerRate">4.84</span> JPY
-        </span>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button type="button" id="syncBtn" class="text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 px-2.5 py-1 rounded-full active:scale-95 transition">
+            🔄 同步中...
+          </button>
+          <span class="text-xs font-semibold bg-sky-500/20 text-sky-200 border border-sky-400/30 px-2 py-1 rounded-full">
+            1:<span id="headerRate">4.84</span>
+          </span>
+        </div>
       </div>
 
       <!-- Main Navigation Tabs -->
@@ -59,6 +64,18 @@
     <section id="panel-itinerary" class="tab-panel space-y-3">
       <!-- Day Filter Pills -->
       <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="dayFilterBar"></div>
+
+      <!-- Actual Spend & Progress Summary -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm flex items-center justify-between gap-3">
+        <div>
+          <div class="text-[11px] font-semibold text-slate-500">行程打卡進度</div>
+          <div class="text-sm font-bold text-slate-900"><span id="itineraryDoneCount">0 / 0</span> 已完成</div>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px] font-semibold text-slate-500">累計實際花費（雲端同步）</div>
+          <div class="text-sm font-bold text-emerald-700" id="actualTotalDisplay">¥0 / NT$0</div>
+        </div>
+      </div>
 
       <!-- Quick Alert Banner -->
       <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-xs text-amber-900 leading-relaxed">
@@ -479,23 +496,107 @@
       '溫泉': 'bg-teal-100 text-teal-800'
     };
 
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwDMqSvB_RNqohpC2Iy0nN-Lf-C31u42rPakVFYilB-YfSWMzjXb7GBYzUQYkzK5xBy/exec';
+    const API_TOKEN = 'hkd2027-sync';
+
     let activeDay = 'ALL';
     let foodChecked = {};
     let bookingChecked = {};
+    let itineraryRecords = {};
+    let openEditorId = null;
 
     try {
       foodChecked = JSON.parse(localStorage.getItem('hkd2027_food') || '{}');
       bookingChecked = JSON.parse(localStorage.getItem('hkd2027_booking') || '{}');
+      itineraryRecords = JSON.parse(localStorage.getItem('hkd2027_records') || '{}');
     } catch (e) {
       foodChecked = {};
       bookingChecked = {};
+      itineraryRecords = {};
     }
 
-    function saveState() {
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function saveLocal() {
       try {
         localStorage.setItem('hkd2027_food', JSON.stringify(foodChecked));
         localStorage.setItem('hkd2027_booking', JSON.stringify(bookingChecked));
+        localStorage.setItem('hkd2027_records', JSON.stringify(itineraryRecords));
       } catch (e) {}
+    }
+
+    function setSyncStatus(state, text) {
+      const btn = document.getElementById('syncBtn');
+      if (!btn) return;
+      if (state === 'syncing') {
+        btn.className = 'text-xs font-semibold bg-amber-500/20 text-amber-200 border border-amber-400/30 px-2.5 py-1 rounded-full active:scale-95 transition';
+        btn.textContent = text || '🔄 同步中...';
+      } else if (state === 'ok') {
+        btn.className = 'text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 px-2.5 py-1 rounded-full active:scale-95 transition';
+        btn.textContent = text || '☁️ 已同步';
+      } else {
+        btn.className = 'text-xs font-semibold bg-rose-500/20 text-rose-200 border border-rose-400/30 px-2.5 py-1 rounded-full active:scale-95 transition';
+        btn.textContent = text || '📴 離線暫存';
+      }
+    }
+
+    async function loadFromCloud() {
+      setSyncStatus('syncing', '🔄 讀取雲端...');
+      try {
+        const res = await fetch(`${GAS_URL}?token=${encodeURIComponent(API_TOKEN)}&t=${Date.now()}`);
+        const json = await res.json();
+        if (json && json.ok && json.data) {
+          Object.entries(json.data).forEach(([id, rec]) => {
+            if (id.startsWith('f')) {
+              foodChecked[id] = !!rec.checked;
+            } else if (id.startsWith('b')) {
+              bookingChecked[id] = !!rec.checked;
+            } else {
+              itineraryRecords[id] = {
+                checked: !!rec.checked,
+                cost: rec.cost === '' || rec.cost === null || rec.cost === undefined ? '' : rec.cost,
+                currency: rec.currency || 'JPY',
+                note: rec.note || '',
+                updatedAt: rec.updatedAt || ''
+              };
+            }
+          });
+          saveLocal();
+          renderItinerary();
+          renderFoodList();
+          renderBookingList();
+          setSyncStatus('ok', '☁️ 已同步');
+        } else {
+          setSyncStatus('err', '⚠️ 同步異常');
+        }
+      } catch (err) {
+        setSyncStatus('err', '📴 離線暫存');
+      }
+    }
+
+    async function syncToCloud(payload) {
+      setSyncStatus('syncing', '🔄 儲存中...');
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ token: API_TOKEN, ...payload })
+        });
+        const json = await res.json();
+        if (json && json.ok) {
+          setSyncStatus('ok', '☁️ 已同步');
+        } else {
+          setSyncStatus('err', '⚠️ 寫入失敗');
+        }
+      } catch (err) {
+        setSyncStatus('err', '📴 離線暫存');
+      }
     }
 
     function getRate() {
@@ -518,45 +619,141 @@
       }).join('');
     }
 
+    function updateSummaryTotals(rate) {
+      let totalItems = 0;
+      let doneItems = 0;
+      let totalJpy = 0;
+      let totalTwd = 0;
+
+      DAYS.forEach(d => {
+        d.items.forEach((it, idx) => {
+          totalItems++;
+          const id = `d${d.day}-${idx}`;
+          const rec = itineraryRecords[id];
+          if (rec && rec.checked) doneItems++;
+          if (rec && rec.cost !== '' && !isNaN(Number(rec.cost))) {
+            const amt = Number(rec.cost);
+            if (rec.currency === 'TWD') totalTwd += amt;
+            else totalJpy += amt;
+          }
+        });
+      });
+
+      const doneEl = document.getElementById('itineraryDoneCount');
+      if (doneEl) doneEl.textContent = `${doneItems} / ${totalItems}`;
+
+      const grandTwd = Math.round(totalTwd + totalJpy / rate);
+      const totalEl = document.getElementById('actualTotalDisplay');
+      if (totalEl) {
+        const parts = [];
+        if (totalJpy > 0) parts.push(`¥${totalJpy.toLocaleString()}`);
+        if (totalTwd > 0) parts.push(`NT$${totalTwd.toLocaleString()}`);
+        totalEl.textContent = parts.length > 0
+          ? `${parts.join(' + ')} (約 NT$${grandTwd.toLocaleString()})`
+          : '¥0 / NT$0';
+      }
+    }
+
     function renderItinerary() {
       const rate = getRate();
+      updateSummaryTotals(rate);
       const list = document.getElementById('itineraryList');
       const filtered = activeDay === 'ALL' ? DAYS : DAYS.filter(d => String(d.day) === activeDay);
 
       list.innerHTML = filtered.map(d => {
-        const dayTotalJpy = d.items.reduce((acc, it) => acc + (it.costJpy || 0), 0);
-        const dayTotalTwd = Math.round(dayTotalJpy / rate);
-        const itemsHtml = d.items.map(it => {
+        const dayEstJpy = d.items.reduce((acc, it) => acc + (it.costJpy || 0), 0);
+        let dayActJpy = 0;
+        let dayActTwd = 0;
+
+        const itemsHtml = d.items.map((it, idx) => {
+          const itemId = `d${d.day}-${idx}`;
+          const rec = itineraryRecords[itemId] || { checked: false, cost: '', currency: 'JPY', note: '' };
+          const isChecked = !!rec.checked;
+          const hasCost = rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost));
+          if (hasCost) {
+            if (rec.currency === 'TWD') dayActTwd += Number(rec.cost);
+            else dayActJpy += Number(rec.cost);
+          }
+
           const badge = CAT_STYLE[it.cat] || 'bg-slate-100 text-slate-800';
           const costTag = it.costJpy > 0
-            ? `<span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">¥${it.costJpy.toLocaleString()} <span class="text-slate-400">(~NT$${Math.round(it.costJpy / rate).toLocaleString()})</span></span>`
+            ? `<span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">預估 ¥${it.costJpy.toLocaleString()}</span>`
             : '';
-          const urlBtn = it.url
-            ? `<a href="${it.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[38px] px-3 py-1 text-xs font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">資訊 ↗</a>`
-            : '';
-          const mapBtn = it.map
-            ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.map)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[38px] px-3 py-1 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 border border-slate-200">📍 地圖</a>`
+          const actualBadge = hasCost
+            ? `<span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">實花 ${rec.currency === 'TWD' ? 'NT$' : '¥'}${Number(rec.cost).toLocaleString()}</span>`
             : '';
 
+          const urlBtn = it.url
+            ? `<a href="${it.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[36px] px-2.5 py-1 text-xs font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">資訊 ↗</a>`
+            : '';
+          const mapBtn = it.map
+            ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.map)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[36px] px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 border border-slate-200">📍 地圖</a>`
+            : '';
+
+          const isEditorOpen = openEditorId === itemId;
+          const notePreview = rec.note
+            ? `<div class="text-xs bg-amber-50/80 border border-amber-200/80 text-amber-950 rounded-lg px-2.5 py-1.5 leading-relaxed">📝 ${escapeHtml(rec.note)}</div>`
+            : '';
+
+          const editorHtml = isEditorOpen ? `
+            <div class="mt-2 pt-2.5 border-t border-slate-200 space-y-2 bg-slate-50/80 p-2.5 rounded-xl">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="col-span-2">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">實際花費</label>
+                  <input type="number" inputmode="decimal" id="cost-${itemId}" value="${hasCost ? rec.cost : ''}" placeholder="金額（選填）" class="w-full min-h-[38px] px-2.5 py-1.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">幣別</label>
+                  <select id="curr-${itemId}" class="w-full min-h-[38px] px-2 py-1.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <option value="JPY" ${rec.currency !== 'TWD' ? 'selected' : ''}>JPY ¥</option>
+                    <option value="TWD" ${rec.currency === 'TWD' ? 'selected' : ''}>TWD $</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">實記筆記（點了什麼、搭幾點車、購物心得等）</label>
+                <textarea id="note-${itemId}" rows="2" placeholder="自由記錄實際內容..." class="w-full px-2.5 py-1.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">${escapeHtml(rec.note)}</textarea>
+              </div>
+              <div class="flex items-center justify-end gap-2">
+                <button type="button" data-cancel-id="${itemId}" class="cancel-rec-btn min-h-[36px] px-3 py-1 text-xs font-semibold rounded-lg bg-white text-slate-600 border border-slate-300">取消</button>
+                <button type="button" data-save-id="${itemId}" data-day="${d.day}" data-idx="${idx}" class="save-rec-btn min-h-[36px] px-3.5 py-1 text-xs font-semibold rounded-lg bg-emerald-600 text-white shadow-sm">儲存並同步</button>
+              </div>
+            </div>
+          ` : '';
+
           return `
-            <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
-              <div class="flex items-start justify-between gap-2">
-                <div class="space-y-0.5">
+            <div class="p-3 rounded-xl border transition ${isChecked ? 'bg-emerald-50/40 border-emerald-300' : 'bg-white border-slate-200'} space-y-2">
+              <div class="flex items-start gap-2.5">
+                <input type="checkbox" id="itchk-${itemId}" data-item-id="${itemId}" data-day="${d.day}" data-idx="${idx}" ${isChecked ? 'checked' : ''} class="itinerary-chk mt-1 w-5 h-5 accent-emerald-600 rounded shrink-0 cursor-pointer" />
+                <div class="flex-1 min-w-0 space-y-0.5">
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="text-xs font-bold text-sky-700">${it.time}</span>
                     <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full ${badge}">${it.cat}</span>
                   </div>
-                  <h3 class="text-sm font-bold text-slate-900 leading-snug">${it.name}</h3>
+                  <label for="itchk-${itemId}" class="block cursor-pointer">
+                    <h3 class="text-sm font-bold leading-snug ${isChecked ? 'line-through text-slate-400' : 'text-slate-900'}">${it.name}</h3>
+                  </label>
                 </div>
               </div>
-              <p class="text-xs text-slate-600 leading-relaxed">${it.note}</p>
-              <div class="flex items-center justify-between flex-wrap gap-2 pt-0.5">
-                <div>${costTag}</div>
-                <div class="flex items-center gap-1.5">${urlBtn}${mapBtn}</div>
+              <p class="text-xs text-slate-600 leading-relaxed pl-7">${it.note}</p>
+              ${notePreview ? `<div class="pl-7">${notePreview}</div>` : ''}
+              <div class="flex items-center justify-between flex-wrap gap-2 pt-0.5 pl-7">
+                <div class="flex items-center gap-1.5 flex-wrap">${costTag}${actualBadge}</div>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" data-edit-id="${itemId}" class="edit-rec-btn inline-flex items-center justify-center min-h-[36px] px-2.5 py-1 text-xs font-semibold rounded-lg ${isEditorOpen ? 'bg-slate-800 text-white' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">✏️ 實記</button>
+                  ${urlBtn}${mapBtn}
+                </div>
               </div>
+              ${editorHtml}
             </div>
           `;
         }).join('');
+
+        const hasDayAct = dayActJpy > 0 || dayActTwd > 0;
+        const dayActStr = [
+          dayActJpy > 0 ? `¥${dayActJpy.toLocaleString()}` : '',
+          dayActTwd > 0 ? `NT$${dayActTwd.toLocaleString()}` : ''
+        ].filter(Boolean).join(' + ');
 
         return `
           <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200/80 shadow-sm space-y-2.5">
@@ -565,7 +762,10 @@
                 <div class="text-xs font-bold text-sky-700">Day ${d.day} · ${d.date} · ${d.area}</div>
                 <h2 class="text-base font-bold text-slate-900">${d.title}</h2>
               </div>
-              ${dayTotalJpy > 0 ? `<div class="text-right shrink-0"><div class="text-xs font-bold text-slate-800">¥${dayTotalJpy.toLocaleString()}</div><div class="text-[11px] text-slate-500">約 NT$${dayTotalTwd.toLocaleString()}</div></div>` : ''}
+              <div class="text-right shrink-0">
+                ${dayEstJpy > 0 ? `<div class="text-[11px] text-slate-500">預估 ¥${dayEstJpy.toLocaleString()}</div>` : ''}
+                ${hasDayAct ? `<div class="text-xs font-bold text-emerald-700">實花 ${dayActStr}</div>` : ''}
+              </div>
             </div>
             <div class="space-y-2">${itemsHtml}</div>
           </div>
@@ -639,6 +839,10 @@
     }
 
     document.addEventListener('click', (e) => {
+      if (e.target.closest('#syncBtn')) {
+        loadFromCloud();
+        return;
+      }
       const tabBtn = e.target.closest('.tab-btn');
       if (tabBtn) {
         switchTab(tabBtn.dataset.tab);
@@ -649,18 +853,99 @@
         activeDay = dayPill.dataset.day;
         renderDayFilters();
         renderItinerary();
+        return;
+      }
+      const editBtn = e.target.closest('.edit-rec-btn');
+      if (editBtn) {
+        const id = editBtn.dataset.editId;
+        openEditorId = openEditorId === id ? null : id;
+        renderItinerary();
+        return;
+      }
+      const cancelBtn = e.target.closest('.cancel-rec-btn');
+      if (cancelBtn) {
+        openEditorId = null;
+        renderItinerary();
+        return;
+      }
+      const saveBtn = e.target.closest('.save-rec-btn');
+      if (saveBtn) {
+        const id = saveBtn.dataset.saveId;
+        const dayNum = Number(saveBtn.dataset.day);
+        const idx = Number(saveBtn.dataset.idx);
+        const dayObj = DAYS.find(x => x.day === dayNum);
+        const itemObj = dayObj ? dayObj.items[idx] : null;
+        const costEl = document.getElementById(`cost-${id}`);
+        const currEl = document.getElementById(`curr-${id}`);
+        const noteEl = document.getElementById(`note-${id}`);
+        const prev = itineraryRecords[id] || { checked: false };
+        const updated = {
+          checked: !!prev.checked,
+          cost: costEl ? costEl.value.trim() : '',
+          currency: currEl ? currEl.value : 'JPY',
+          note: noteEl ? noteEl.value.trim() : ''
+        };
+        itineraryRecords[id] = updated;
+        openEditorId = null;
+        saveLocal();
+        renderItinerary();
+        syncToCloud({
+          id,
+          category: itemObj ? `D${dayNum}-${itemObj.cat}` : `D${dayNum}`,
+          name: itemObj ? itemObj.name : id,
+          ...updated
+        });
       }
     });
 
     document.addEventListener('change', (e) => {
-      if (e.target.classList.contains('food-chk')) {
-        foodChecked[e.target.dataset.foodId] = e.target.checked;
-        saveState();
+      if (e.target.classList.contains('itinerary-chk')) {
+        const id = e.target.dataset.itemId;
+        const dayNum = Number(e.target.dataset.day);
+        const idx = Number(e.target.dataset.idx);
+        const dayObj = DAYS.find(x => x.day === dayNum);
+        const itemObj = dayObj ? dayObj.items[idx] : null;
+        const prev = itineraryRecords[id] || { cost: '', currency: 'JPY', note: '' };
+        const updated = { ...prev, checked: e.target.checked };
+        itineraryRecords[id] = updated;
+        saveLocal();
+        renderItinerary();
+        syncToCloud({
+          id,
+          category: itemObj ? `D${dayNum}-${itemObj.cat}` : `D${dayNum}`,
+          name: itemObj ? itemObj.name : id,
+          ...updated
+        });
+      } else if (e.target.classList.contains('food-chk')) {
+        const id = e.target.dataset.foodId;
+        foodChecked[id] = e.target.checked;
+        const foodObj = MUST_EAT.find(f => f.id === id);
+        saveLocal();
         renderFoodList();
+        syncToCloud({
+          id,
+          category: '必吃清單',
+          name: foodObj ? foodObj.name : id,
+          checked: e.target.checked,
+          cost: '',
+          currency: 'JPY',
+          note: ''
+        });
       } else if (e.target.classList.contains('booking-chk')) {
-        bookingChecked[e.target.dataset.bookingId] = e.target.checked;
-        saveState();
+        const id = e.target.dataset.bookingId;
+        bookingChecked[id] = e.target.checked;
+        const bkObj = BOOKINGS.find(b => b.id === id);
+        saveLocal();
         renderBookingList();
+        syncToCloud({
+          id,
+          category: '預約清單',
+          name: bkObj ? bkObj.name : id,
+          checked: e.target.checked,
+          cost: '',
+          currency: 'JPY',
+          note: ''
+        });
       }
     });
 
@@ -672,6 +957,7 @@
     renderFoodList();
     renderBookingList();
     updateCurrency();
+    loadFromCloud();
   </script>
 </body>
 </html>
