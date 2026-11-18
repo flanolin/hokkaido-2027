@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2027 北海道冬季 10 天 9 夜手機行程攻略</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+  <!-- Sticky Top Header -->
+  <header class="sticky top-0 z-30 bg-slate-900 text-white shadow-md">
+    <div class="max-w-2xl mx-auto px-4 pt-3 pb-2">
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight">❄️ 2027 北海道雪國 10 天 9 夜</h1>
+          <p class="text-xs text-slate-300">01/08 (五) – 01/17 (日) ｜ 札幌進・函館出 ｜ 2 人</p>
+        </div>
+        <span class="shrink-0 text-xs font-semibold bg-sky-500/20 text-sky-200 border border-sky-400/30 px-2.5 py-1 rounded-full">
+          1 TWD = <span id="headerRate">4.84</span> JPY
+        </span>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <nav class="grid grid-cols-5 gap-1 mt-3" aria-label="主選單">
+        <button type="button" data-tab="itinerary" class="tab-btn min-h-[44px] rounded-xl text-xs sm:text-sm font-semibold transition px-1 py-2 bg-sky-500 text-white shadow">
+          📅 行程
+        </button>
+        <button type="button" data-tab="food" class="tab-btn min-h-[44px] rounded-xl text-xs sm:text-sm font-semibold transition px-1 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+          💜 必吃
+        </button>
+        <button type="button" data-tab="transit" class="tab-btn min-h-[44px] rounded-xl text-xs sm:text-sm font-semibold transition px-1 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+          🚆 交通
+        </button>
+        <button type="button" data-tab="stay" class="tab-btn min-h-[44px] rounded-xl text-xs sm:text-sm font-semibold transition px-1 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+          🏨 住宿預約
+        </button>
+        <button type="button" data-tab="prefs" class="tab-btn min-h-[44px] rounded-xl text-xs sm:text-sm font-semibold transition px-1 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+          ❤️ 偏好
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-3 sm:px-4 pt-3 space-y-4">
+    <!-- TAB 1: ITINERARY -->
+    <section id="panel-itinerary" class="tab-panel space-y-3">
+      <!-- Day Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="dayFilterBar"></div>
+
+      <!-- Quick Alert Banner -->
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-xs text-amber-900 leading-relaxed">
+        <span class="font-bold">⚠️ 行程與支付重點提醒：</span>札幌住宿已定 <span class="font-semibold">Hotel Vista Sapporo Odori</span>（薄野／狸小路 5 丁目）。<span class="font-semibold">Suage+ 本店、麵屋雪風、定山溪紅葉亭</span>均不收信用卡，請備妥現金；<span class="font-semibold">函館越前屋試飲</span>需準備 ¥100 硬幣。
+      </div>
+
+      <!-- Day Cards Container -->
+      <div id="itineraryList" class="space-y-4"></div>
+    </section>
+
+    <!-- TAB 2: MUST-EAT CHECKLIST -->
+    <section id="panel-food" class="tab-panel hidden space-y-3">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">💜 必吃美食與伴手禮清單</h2>
+            <p class="text-xs text-slate-500 mt-0.5">點擊勾選已攻略項目（進度自動保存於此裝置）</p>
+          </div>
+          <div class="text-right">
+            <span id="foodProgressText" class="text-sm font-bold text-purple-700">0 / 15</span>
+          </div>
+        </div>
+        <div class="w-full bg-slate-100 h-2 rounded-full mt-2.5 overflow-hidden">
+          <div id="foodProgressBar" class="bg-purple-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div id="foodList" class="space-y-2.5"></div>
+    </section>
+
+    <!-- TAB 3: TRANSIT & CURRENCY -->
+    <section id="panel-transit" class="tab-panel hidden space-y-3">
+      <!-- Currency Converter -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-bold text-slate-900">💴 日圓快速換算台幣</h2>
+          <label class="text-xs text-slate-500 flex items-center gap-1">
+            匯率
+            <input id="rateInput" type="number" step="0.01" min="1" value="4.84" class="w-16 px-2 py-1 text-right font-semibold border border-slate-300 rounded-lg text-slate-800" />
+          </label>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label for="jpyInput" class="block text-xs text-slate-500 mb-1">日圓 (JPY)</label>
+            <input id="jpyInput" type="number" min="0" placeholder="例如 3800" value="3800" class="w-full min-h-[44px] px-3 py-2 border border-slate-300 rounded-xl font-semibold text-base" />
+          </div>
+          <div>
+            <label class="block text-xs text-slate-500 mb-1">約合台幣 (TWD)</label>
+            <div id="twdOutput" class="w-full min-h-[44px] px-3 py-2 bg-sky-50 border border-sky-200 rounded-xl font-bold text-base text-sky-900 flex items-center">
+              NT$ 785
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pass & Cash Evaluation -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+        <h2 class="text-base font-bold text-slate-900">🎟️ 周遊券評估 ＆ 現金 / 整理券重點</h2>
+
+        <div class="p-3 rounded-xl bg-rose-50 border border-rose-200 space-y-1">
+          <div class="text-xs sm:text-sm font-bold text-rose-950">❌ 北海道樂享周遊券（¥4,500 選 3 項）➔ 不建議購買</div>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            目前行程僅涵蓋「豐平峽溫泉入浴（¥1,300）」一項，五稜郭塔與函館山纜車均不在名單內，買券會倒虧 ¥3,200（除非額外加排 AOAO 水族館＋藻岩山纜車）。
+          </p>
+        </div>
+
+        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 space-y-1">
+          <div class="text-xs sm:text-sm font-bold text-amber-950">💵 現金專用 / 特殊支付店家</div>
+          <ul class="text-xs text-slate-700 space-y-1 leading-relaxed">
+            <li>• <span class="font-semibold">湯咖哩 Suage+ 本店</span>：僅現金／PayPay（不收信用卡）。</li>
+            <li>• <span class="font-semibold">麵屋 雪風（薄野本店）</span>：僅現金／PayPay（不收信用卡）。</li>
+            <li>• <span class="font-semibold">定山溪 紅葉亭</span>：不收信用卡，建議備妥現金。</li>
+            <li>• <span class="font-semibold">函館 酒ブティック 越前屋</span>：2F 試飲機務必自備 <span class="font-bold">¥100 硬幣</span>。</li>
+            <li>• <span class="font-semibold">小樽三角市場</span>：部分小攤位偏好現金，建議預留現鈔。</li>
+          </ul>
+        </div>
+
+        <div class="p-3 rounded-xl bg-purple-50 border border-purple-200 space-y-1">
+          <div class="text-xs sm:text-sm font-bold text-purple-950">🎫 整理券 / 預約提醒</div>
+          <ul class="text-xs text-slate-700 space-y-1 leading-relaxed">
+            <li>• <span class="font-semibold">滝波食堂（小樽三角市場）</span>：有現場順番待ち受付（整理券），先抽號再逛市場。</li>
+            <li>• <span class="font-semibold">成吉思汗 大黑屋</span>：可先線上預約；現場亦有抽號機領取整理券。</li>
+            <li>• <span class="font-semibold">Suage+ 本店 / 麵屋雪風</span>：無預約也無整理券，需現場排隊。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Key Transit Cards -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+        <h2 class="text-base font-bold text-slate-900">🚆 關鍵交通與末班車備忘</h2>
+
+        <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200 space-y-1.5">
+          <div class="text-sm font-bold text-indigo-950">01/08 (五) 新千歲機場 ➔ Hotel Vista Sapporo Odori</div>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            <span class="font-semibold">首選（免轉乘）：</span>搭「新千歲機場連絡巴士（札幌都心便）」直達 <span class="font-semibold">南3条すすきの / すすきの</span>（¥1,500/人、65–74 分），下車步行約 5 分即達飯店。<br />
+            <span class="font-semibold">備案（JR）：</span>快速 Airport 至札幌（¥1,230）＋地鐵南北線至薄野/大通（¥210）。
+          </p>
+          <a href="https://www.chuo-bus.co.jp/feature/airport/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[40px] px-3 py-1.5 mt-1 text-xs font-semibold rounded-lg bg-indigo-600 text-white">
+            中央巴士機場線資訊 ↗
+          </a>
+        </div>
+
+        <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 space-y-1.5">
+          <div class="text-sm font-bold text-sky-950">01/11 (一) 場外市場 ➔ 小樽（中午抵達）＆ 末班車</div>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            <span class="font-semibold">去程：</span>JR 札幌站搭函館本線 1 站（3 分鐘、¥210）至 <span class="font-semibold">JR 桑園站</span>，步行 8–10 分到場外市場吃烤螃蟹早午餐；約 11:10 走回桑園站搭 JR 函館本線直達小樽（約 40 分鐘），<span class="font-semibold">12:00 左右抵達小樽</span>。
+          </p>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            <span class="font-semibold">小樽回札幌末班車：</span>快速 Airport 末班 <span class="font-bold text-rose-700">19:27</span>（20:01 抵）；普通列車 <span class="font-bold text-rose-700">22:31</span>（23:17 抵）、最終末班車 <span class="font-bold text-rose-700">23:08</span>（23:53 抵札幌）。
+          </p>
+          <a href="https://www.navitime.co.jp/diagram/depArrTimeList?departure=00003724&arrival=00002928&line=00000227&updown=1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[40px] px-3 py-1.5 mt-1 text-xs font-semibold rounded-lg bg-sky-600 text-white">
+            查看小樽→札幌 JR 時刻表 ↗
+          </a>
+        </div>
+
+        <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 space-y-1.5">
+          <div class="text-sm font-bold text-emerald-950">01/13 (三) 定山溪 ＆ 豐平峽溫泉直達巴士</div>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            搭乘預約制 <span class="font-semibold">河童 Liner 號（かっぱライナー号）</span>：JR 札幌站前 27 號乘車處出發，首班 <span class="font-bold">09:10</span>、豐平峽溫泉回程末班 <span class="font-bold">17:00</span>，單程 ¥1,700（約 60–70 分鐘）。<span class="font-semibold text-emerald-900">最晚需於前一天 17:00 前完成預約</span>。
+          </p>
+          <a href="https://www.gltjp.com/zh-hant/directory/item/13932/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[40px] px-3 py-1.5 mt-1 text-xs font-semibold rounded-lg bg-emerald-700 text-white">
+            河童 Liner 號指南 ↗
+          </a>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+          <div class="text-sm font-bold text-slate-900">🎫 JR 車票單買明細（❌ 不需買 JR Pass）</div>
+          <p class="text-xs text-slate-600">5 日券預購 ¥22,000（札幌-登別 4 日券 ¥10,000 不含函館），全程單買僅約 ¥14,090–¥18,720/人，單買省更多！</p>
+          <ul class="text-xs text-slate-700 space-y-1">
+            <li>• 01/08 機場 ➔ 札幌（巴士 ¥1,500 或 JR ¥1,230/人）</li>
+            <li>• 01/11 札幌 ➔ 桑園 ➔ 小樽 ⇄ 札幌：約 ¥1,810/人</li>
+            <li>• 01/14 札幌 ➔ 登別（特急北斗／鈴蘭指定席）：¥4,890/人</li>
+            <li>• 01/15 登別 ➔ 函館（特急北斗指定席）：¥7,390/人</li>
+            <li>• 01/16（若去大沼公園來回）：約 ¥3,400/人（不去更省）</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Smoking Areas -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2">
+        <h2 class="text-base font-bold text-slate-900">🚬 主要車站與區域紙菸吸菸區</h2>
+        <ul class="text-xs text-slate-700 space-y-1.5 leading-relaxed">
+          <li>• <span class="font-semibold">新千歲機場</span>：國際線/國內線航廈指定吸菸室（安檢前後皆有）。</li>
+          <li>• <span class="font-semibold">JR 札幌站</span>：車站東西連絡口附近指定密閉吸菸室、STELLAR PLACE 館內指定吸菸室（戶外全面禁菸）。</li>
+          <li>• <span class="font-semibold">大通・薄野</span>：大通公園指定吸菸亭、COCONO SUSUKINO 等商場室內吸菸室。</li>
+          <li>• <span class="font-semibold">JR 函館站</span>：站外巴士總站旁指定吸菸區、金森紅磚倉庫指定吸菸點。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TAB 4: ACCOMMODATION & BOOKING -->
+    <section id="panel-stay" class="tab-panel hidden space-y-3">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+        <h2 class="text-base font-bold text-slate-900">🏨 9 晚住宿規劃</h2>
+        <div class="space-y-2.5">
+          <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-sm font-bold text-slate-900">✅ Hotel Vista Sapporo Odori（已訂 6 晚）</span>
+              <span class="text-xs font-semibold text-sky-800 bg-sky-100 px-2 py-0.5 rounded-full">01/08–01/14</span>
+            </div>
+            <p class="text-xs text-slate-700">狸小路 5 丁目步行 1 分｜15㎡ 三點分離式衛浴｜總計 <span class="font-bold">¥64,600</span>（約 ¥10,767/晚）</p>
+            <div class="flex gap-2 pt-1">
+              <a href="https://odori.hotel-vista.jp/ja/rooms" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-sky-700 underline">官網</a>
+              <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Vista+Sapporo+Odori" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-600 underline">地圖</a>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-sm font-bold text-slate-900">✅ ホテルゆもと登別｜牛肉方案（已訂 1 晚）</span>
+              <span class="text-xs font-semibold text-sky-800 bg-sky-100 px-2 py-0.5 rounded-full">01/14–01/15</span>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed">
+              <span class="font-semibold">已訂方案：</span>10 疊和室（含玄關衛浴約 30㎡）｜登別牛味噌霙鍋會席（レストラン食・一泊二食）｜總計 <span class="font-bold">¥27,504</span>。<br />
+              <span class="font-semibold">溫泉交換制：</span>4 種泉質（硫磺/食鹽/酸性鐵/混合）。13:00–02:00 / 04:00–09:30（02:00–04:00 清場交換，桑拿 13:00–22:00 &amp; 07:00–09:30），浴場無毛巾需自房攜帶。<br />
+              <span class="font-semibold">早餐提醒：</span>2F 餐廳「ポプラ」和洋自助（07:00–09:30，和食為主）；若想吃西式麵包可至 08:00 開門的 adex BAKERY&amp;CAFE。
+            </p>
+            <div class="flex gap-3 pt-1 flex-wrap">
+              <a href="https://travel.yahoo.co.jp/00001873/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-rose-700 underline">Yahoo!トラベル 訂房 ↗</a>
+              <a href="https://yumoto-noboribetu.com/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-sky-700 underline">官網 ↗</a>
+              <a href="https://www.adexinn.com/ja-bakerycafe" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-600 underline">adex 咖啡廳 ↗</a>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-sm font-bold text-slate-900">✅ Hotel Resol 函館（已訂 2 晚）</span>
+              <span class="text-xs font-semibold text-sky-800 bg-sky-100 px-2 py-0.5 rounded-full">01/15–01/17</span>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed">
+              JR 函館站步行 3 分、門口即市電站、對面即函館朝市｜15㎡ 全室「脫鞋式」溫馨設計、大廳免費迎賓飲料吧（至 24:00）｜總計 <span class="font-bold">¥12,740</span>（約 ¥6,370/晚）。
+            </p>
+            <div class="flex gap-2 pt-1">
+              <a href="https://zh-cht.www.resol-hotel.jp/hakodate/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-sky-700 underline">官網</a>
+              <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Resol+Hakodate" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-600 underline">地圖</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Checklist -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-bold text-slate-900">✅ 行前必預約檢核表</h2>
+          <span id="bookingProgressText" class="text-xs font-bold text-sky-700">0 / 6</span>
+        </div>
+        <div id="bookingList" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PREFERENCES -->
+    <section id="panel-prefs" class="tab-panel hidden space-y-3">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2">
+        <h2 class="text-base font-bold text-slate-900">📌 基本資訊與共同方向</h2>
+        <ul class="text-xs text-slate-700 space-y-1 leading-relaxed">
+          <li>• <span class="font-semibold">日期與航班：</span>2027/01/08(五)–01/17(日) 10 天 9 夜｜星宇航空（桃園進新千歲、函館出桃園，每人 23kg 託運）。</li>
+          <li>• <span class="font-semibold">核心主題：</span>女友第一次看雪。少換飯店（札幌已訂 Hotel Vista 6 晚）、札幌往函館黑貓宅急便寄大行李。</li>
+          <li>• <span class="font-semibold">關鍵條件：</span>避開或提早訂 1/9–1/11 日本三連休；JR 車票單買優於周遊券；體驗活動每人每項不超過 ¥15,000。</li>
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-sky-200 space-y-2">
+        <h2 class="text-base font-bold text-sky-950">👨 男方（本人）旅遊偏好</h2>
+        <ul class="text-xs text-slate-700 space-y-1.5 leading-relaxed">
+          <li>• <span class="font-semibold">景點偏好：</span>歷史文化、建築、老街、庶民生活、鐵道文化、早市（看鮮魚拍賣或市場活力）；<span class="font-semibold text-rose-700">不喜歡流行服飾店、時尚百貨</span>。</li>
+          <li>• <span class="font-semibold">作息與節奏：</span>喜歡早起（06:00–07:00 出門）避開人潮，討厭排隊。</li>
+          <li>• <span class="font-semibold">泡澡與溫泉：</span>喜歡泡澡與泡溫泉，在意溫泉旅館<span class="font-semibold">男女湯是否相同與交換時間</span>（希望能兩邊都體驗到）。</li>
+          <li>• <span class="font-semibold">用餐與早餐：</span>偏好餐廳<span class="font-semibold">安靜不吵雜</span>（排斥吵鬧的大廳百匯），並<span class="font-semibold">重視早餐品質</span>（不希望像商旅簡餐過於陽春，會在意登別是否有好吃早餐或烘焙咖啡廳）。</li>
+          <li>• <span class="font-semibold">飲食與清酒：</span>重視道地特色、B 級美食與地方名物；清酒偏好<span class="font-semibold">甘口、果香、輕爽順口</span>。</li>
+          <li>• <span class="font-semibold">CP 值與效率：</span>重視 CP 值（精算票券與折扣券）；購物能早買就早買。</li>
+          <li>• <span class="font-semibold">移動與習慣：</span>Android 手機、喜歡共享單車／滑板車（雪地改地鐵或計程車）；<span class="font-semibold">有抽紙菸習慣</span>（需標出吸菸區）；偏好重點精煉＋地圖／官網連結。</li>
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-200 space-y-2">
+        <h2 class="text-base font-bold text-pink-950">👩 女友旅遊偏好</h2>
+        <ul class="text-xs text-slate-700 space-y-1.5 leading-relaxed">
+          <li>• <span class="font-semibold">看雪必做 3 件事：</span>打雪仗玩雪（積雪深厚安全地點）、拍美照（雪景與冬季點燈）、泡溫泉。</li>
+          <li>• <span class="font-semibold">景點偏好與排除：</span><span class="font-semibold text-rose-700">不喜歡純觀賞性的日式庭園</span>；自然景點與逛街購物約 50/50（藥妝、地下街、伴手禮）；偏好北海道神宮、紅磚廳舍（僅拍外觀不入內）、小樽街區、場外市場與函館朝市。</li>
+          <li>• <span class="font-semibold">作息與體力：</span>可配合早起，但<span class="font-semibold">每天下午一定要安排咖啡廳吃甜點、坐下休息</span>；零下戶外只接受短距離步行，遠或風大改搭計程車，偏好拱廊或室內連通動線。</li>
+          <li>• <span class="font-semibold">正餐與喝酒：</span>喜歡螃蟹、和牛、在地小吃、用餐喝點酒；<span class="font-semibold">不要螃蟹吃到飽或自助餐</span>，偏好專人服務會席料理或質感海鮮居酒屋單點現烤大蟹腳（如 Suage+、奧芝商店、大黑屋、麵屋雪風、SEIS 居酒屋、越前屋試飲）。</li>
+          <li>• <span class="font-semibold">指定甜點與伴手禮：</span>Majisand、雪印 Parlor、La Giostra、佐藤夜聖代、北大 Café &amp; Labo、Un délice 布丁、定山溪蘋果派、大黑屋黑糖饅頭、北菓樓、六花亭五稜郭店。</li>
+          <li>• <span class="font-semibold">住宿細節：</span>喜歡三點獨立型衛浴與舒適泡澡浴缸（如 Hotel Vista 札幌大通、fav HAKODATE）。</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const DAYS = [
+      {
+        day: 1,
+        date: '01/08 (五)',
+        title: '抵達札幌 ➔ 狸小路美食夜',
+        area: '新千歲・札幌薄野',
+        items: [
+          { time: '09:15 - 14:05', name: '星宇 JX850 桃園 ➔ 新千歲', cat: '航班', note: '含 23kg 托運行李×2（已開票，總計 NT$40,480）。', costJpy: 0 },
+          { time: '14:50 - 16:00', name: '新千歲機場連絡巴士 ➔ 南3条すすきの/すすきの', cat: '交通', note: '¥1,500/人（約 65–74 分）免在札幌站換乘地鐵，直達薄野步行約 5 分到飯店！備案：JR ¥1,230＋地鐵 ¥210。', costJpy: 3000, url: 'https://www.chuo-bus.co.jp/feature/airport/', map: 'Susukino Station' },
+          { time: '16:10 - 16:40', name: 'Hotel Vista Sapporo Odori Check-in（已訂）', cat: '住宿', note: '狸小路 5 丁目旁，15㎡ 三點分離式衛浴，6 晚總計 ¥64,600。', costJpy: 64600, url: 'https://odori.hotel-vista.jp/ja/rooms', map: 'Hotel Vista Sapporo Odori' },
+          { time: '16:45 - 17:15', name: 'Majisand 水果三明治專賣店', cat: '美食', note: '狸小路 1 丁目（11:00–20:00）。北海道鮮奶油×當季水果戚風吐司。', costJpy: 1500, url: 'https://majisand.shop/', map: 'Majisand Sapporo' },
+          { time: '17:20 - 18:15', name: '本陣狸大明神社 ＆ 狸小路散策', cat: '景點', note: '狸小路 2 丁目拱廊，有屋頂不怕下雪。', costJpy: 0, map: 'Honjin Tanuki Daimyojin Shrine' },
+          { time: '18:30 - 20:00', name: '湯咖哩 Suage+ 本店', cat: '美食', note: '【僅收現金/PayPay・不收信用卡｜無預約無整理券】飯店步行約 3 分！必點脆皮知床雞肉串湯咖哩與炙燒起司飯。', costJpy: 3800, url: 'https://suage.info/stores/suage-plus/', map: 'Soup Curry Suage+ Sapporo' },
+          { time: '20:15 - 21:00', name: 'GELATERIA La Giostra 義式冰淇淋', cat: '甜點', note: '狸小路 7 丁目（週五六開至 24:00），推薦開心果與教皇之鹽。', costJpy: 1400, map: 'GELATERIA La Giostra Sapporo' }
+        ]
+      },
+      {
+        day: 2,
+        date: '01/09 (六)',
+        title: '札幌站前購物 ＆ 經典甜點燒肉',
+        area: '札幌站・大通・薄野',
+        items: [
+          { time: '10:00 - 12:00', name: 'STELLAR PLACE ＆ 東急百貨 UNIQLO 旗艦店', cat: '購物', note: '白天室內逛街暖和不受寒，可補齊保暖發熱衣與雪國配件。', costJpy: 0, map: 'Sapporo Stellar Place' },
+          { time: '12:15 - 13:30', name: '奧芝商店 駅前創成寺（湯咖哩）', cat: '美食', note: '札幌站北4西1 B1F（11:00–22:00，可刷卡/PayPay），招牌鮮蝦高湯×宗谷黑牛漢堡排。', costJpy: 3600, url: 'https://www.bring-you.info/zh-tw/soup-curry-okushiba', map: 'Okushiba Shoten Ekimae Soseiji' },
+          { time: '14:00 - 15:00', name: '雪印 Parlor 札幌本店', cat: '甜點', note: '10:00–19:00，必吃昭和天皇御用「Snow Royal」冰淇淋。', costJpy: 2200, url: 'https://www.gltjp.com/zh-hant/directory/item/13764/', map: 'Snow Brand Parlor Sapporo' },
+          { time: '15:15 - 16:30', name: '北菓樓 札幌本館', cat: '甜點', note: '10:00–18:00（安藤忠雄改建古蹟）。現場有試吃！必買夢不思議泡芙、北菓樓米果綜合包。', costJpy: 2500, url: 'https://www.visit-hokkaido.jp/tw/spot/detail_12970.html', map: 'Kitakaro Sapporo Honkan' },
+          { time: '17:30 - 19:30', name: '成吉思汗 大黑屋（札幌薄野分店）', cat: '美食', note: '【可先線上預約／現場有抽號機領整理券】15:00–23:30，必點新鮮小羔羊肩里肌。', costJpy: 8500, url: 'https://www.bigfang.tw/blog/post/jingisukan-daikokuya-sapporo1go', map: 'Daikokuya Jingisukan Sapporo' },
+          { time: '20:00 - 21:15', name: '芭菲、咖啡、酒、佐藤（收尾聖代）', cat: '甜點', note: '必點「鹽味焦糖與開心果」聖代，體驗札幌夜聖代文化。', costJpy: 3600, url: 'https://hokkaido.letsgojp.com/archives/565323/', map: 'Parfait Coffee Liquor Sato Sapporo' }
+        ]
+      },
+      {
+        day: 3,
+        date: '01/10 (日)',
+        title: '北海道神宮 ＆ 北大校園 ＆ 宵夜拉麵居酒屋',
+        area: '圓山・札幌',
+        items: [
+          { time: '08:30 - 10:30', name: '北海道神宮（雪景參拜）', cat: '景點', note: '冬季開放 07:00–16:00。地鐵東西線至「円山公園站」步行 15 分鐘。香油錢/御守請備現金。', costJpy: 500, url: 'https://www.visit-hokkaido.jp/spot/detail_10001.html', map: 'Hokkaido Jingu' },
+          { time: '11:00 - 11:30', name: '北海道廳舊本廳舍（紅磚廳舍）', cat: '景點', note: '依約定「僅拍正門外觀，不入內參觀」，拍完雪景紅磚即走。', costJpy: 0, map: 'Former Hokkaido Government Office' },
+          { time: '12:00 - 14:30', name: '北海道大學 － 北大マルシェ Café & Labo', cat: '美食', note: '10:00–16:00（L.O. 15:30）。必買：北大牛乳布丁、年輪蛋糕、可麗露、發酵奶油蛋糕、紋別奶油霜蛋糕。', costJpy: 3000, url: 'https://marche-cafelabo.com/', map: 'Hokudai Marche Cafe & Labo' },
+          { time: '15:00 - 17:30', name: '大通公園 ＆ 札幌白色燈樹節散步', cat: '景點', note: '傍晚點燈後可順逛地下街避寒，或回 Hotel Vista 休息。', costJpy: 0, map: 'Odori Park Sapporo' },
+          { time: '18:00 - 19:30', name: '麵屋 雪風（薄野本店）', cat: '美食', note: '【僅收現金/PayPay・不收信用卡｜現場排隊】濃厚味噌拉麵排隊名店，建議剛開門或離峰前往。', costJpy: 2400, url: 'https://menyayukikaze.com/shop/', map: 'Menya Yukikaze Susukino' },
+          { time: '20:00 - 22:00', name: '狸小路 SEIS 居酒屋（酒と銀シャリ せいす）', cat: '美食', note: '狸小路 6 丁目，離飯店步行 2 分！週日營業 15:00–23:00，建議先訂位。', costJpy: 6500, url: 'https://seis.gorp.jp/', map: 'Seisu Tanukikoji Sapporo' }
+        ]
+      },
+      {
+        day: 4,
+        date: '01/11 (一)',
+        title: '場外市場烤螃蟹 ➔ 小樽深度散策（待到晚上）',
+        area: '札幌桑園・小樽',
+        items: [
+          { time: '08:30 - 11:00', name: '札幌市中央批發市場 場外市場（早午餐烤螃蟹）', cat: '美食', note: '全年無休 06:00–15:00！JR 札幌站搭函館本線 1 站（3 分鐘 ¥210）至「JR 桑園站」，步行 8–10 分鐘即達。', costJpy: 8000, url: 'https://www.visit-hokkaido.jp/tw/spot/detail_10005.html', map: 'Sapporo Jogai Market' },
+          { time: '11:10 - 12:00', name: 'JR 桑園站 ➔ JR 小樽站', cat: '交通', note: '吃完早午餐走回桑園站直接搭函館本線往小樽（約 40 分鐘），中午 12:00 左右準時抵小樽！', costJpy: 1600, map: 'JR Otaru Station' },
+          { time: '12:15 - 14:00', name: '小樽三角市場（海鮮丼＋豐田商店水果）', cat: '美食', note: '【滝波食堂可現場抽整理券候位｜市場建議備現金】排名：1.滝波 2.武田 3.はやしや 4.惠比壽櫻。選「公的帝王蟹」！飯後吃豐田商店切片水果。', costJpy: 9000, url: 'https://otaru-takinami.com/fr/16', map: 'Otaru Sankaku Market' },
+          { time: '14:30 - 15:30', name: 'Un délice (アンデリス) 布丁專賣店', cat: '甜點', note: '週一有營業（10:00–17:00，週二三休）。必買：布丁大福、余市威士忌布丁、布丁銅鑼燒。', costJpy: 2000, url: 'https://shinblog.com.tw/undelice/', map: 'Un delice Otaru' },
+          { time: '15:30 - 19:00', name: '堺町通商店街 ＆ 小樽「青之運河」點燈', cat: '景點', note: '中午到小樽可悠閒逛完整條堺町通、北菓樓小樽本館，傍晚看藍調運河點燈。', costJpy: 0, map: 'Otaru Canal' },
+          { time: '19:27 / 22:31 / 23:08', name: 'JR 函館本線 小樽 ➔ 札幌（末班車資訊）', cat: '交通', note: '快速 Airport 末班 19:27；普通車末班 22:31 與最終 23:08（23:53 抵札幌）。', costJpy: 1600, url: 'https://www.navitime.co.jp/diagram/depArrTimeList?departure=00003724&arrival=00002928&line=00000227&updown=1', map: 'JR Otaru Station' }
+        ]
+      },
+      {
+        day: 5,
+        date: '01/12 (二)',
+        title: '旭山動物園 ＋ 雪上活動 ＋ 森林精靈露台一日遊',
+        area: '旭川・美瑛・富良野',
+        items: [
+          { time: '07:45 - 19:15', name: 'KKday / Klook 札幌出發一日遊專車', cat: '景點', note: '強烈建議跟團！串聯「旭山動物園（11:00 企鵝散步）」＋「四季彩之丘（可自費體驗雪上摩托車／雪地車）」＋「富良野森林精靈露台」。', costJpy: 18000, url: 'https://www.kkday.com/zh-hk/product/135996-hokkaido-sapporo-asahiyama-zoo-biei-blue-pond-tour-japan', map: 'Asahiyama Zoo' },
+          { time: '19:30 - 21:00', name: '薄野／狸小路彈性晚餐', cat: '美食', note: '回札幌後就近於飯店周邊用餐休息。', costJpy: 5000, map: 'Susukino Station' }
+        ]
+      },
+      {
+        day: 6,
+        date: '01/13 (三)',
+        title: '定山溪溫泉街點心巡禮 ＋ 豐平峽雪見露天風呂',
+        area: '定山溪・豐平峽',
+        items: [
+          { time: '09:10 - 10:15', name: '河童 Liner 號（札幌站 27 號 ➔ 定山溪）', cat: '交通', note: '採預約制（最晚前一天 17:00 前預約），單程 ¥1,700/人。', costJpy: 3400, url: 'https://www.gltjp.com/zh-hant/directory/item/13932/', map: 'Jozankei Onsen' },
+          { time: '11:00 - 12:15', name: '定山溪溫泉街 － 紅葉亭子蕎麥餐廳', cat: '美食', note: '【不收信用卡・請備現金】1927 年創業老字號手打蕎麥麵。', costJpy: 2600, url: 'https://jozankei.jp/tw/store/kouyoutei/', map: 'Kouyoutei Jozankei' },
+          { time: '12:15 - 13:15', name: '買點心咖啡去泡湯（J・glacée / tocchan café / 大黑屋商店）', cat: '甜點', note: '買齊「蘋果派」、「咖啡」、「大黑屋商店 溫泉黑糖饅頭（建議備現金）」！', costJpy: 2500, url: 'https://jozankei.jp/tw/store/j-glacee/', map: 'Daikokuya Shoten Jozankei' },
+          { time: '13:30 - 16:45', name: '豐平峽溫泉（100% 源泉掛流露天溫泉）', cat: '溫泉', note: '10:00–22:30 營業，入浴費 ¥1,300/人（可刷卡/QR/現金），邊賞雪景邊泡美肌之湯。', costJpy: 2600, url: 'https://jozankei.jp/tw/oneday/hoheikyo-onsen/', map: 'Hoheikyo Onsen' },
+          { time: '17:00 - 18:10', name: '河童 Liner 號末班車返回札幌', cat: '交通', note: '17:00 從豐平峽溫泉出發直達札幌站（單程 ¥1,700/人）。', costJpy: 3400, url: 'https://www.gltjp.com/zh-hant/directory/item/13932/', map: 'Hoheikyo Onsen' }
+        ]
+      },
+      {
+        day: 7,
+        date: '01/14 (四)',
+        title: '黑貓宅急便寄行李 ➔ 登別溫泉一泊二食',
+        area: '札幌 ➔ 登別溫泉',
+        items: [
+          { time: '09:30 - 12:30', name: '寄大行李至函館 ＆ 札幌補逛採買', cat: '交通', note: '從 Hotel Vista 退房後寄大行李至函館飯店，只背輕便過夜包去登別。', costJpy: 5000, map: 'JR Sapporo Station' },
+          { time: '14:00 - 15:40', name: 'JR 特急北斗／鈴蘭號 札幌 ➔ 登別 ＋ 巴士', cat: '交通', note: 'JR 指定席 ¥4,890/人，出站轉乘道南巴士上登別溫泉街。', costJpy: 10500, map: 'JR Noboribetsu Station' },
+          { time: '16:00 - 21:00', name: 'ホテルゆもと登別 Check-in（已訂）', cat: '住宿', note: '【已訂妥 ¥27,504】10 疊和室（含玄關衛浴約 30㎡），登別牛味噌霙鍋會席（レストラン食・一泊二食）。4 種泉質源泉掛流，男女湯交換制 13:00–02:00 / 04:00–09:30（02:00–04:00 清場交換），浴場無毛巾需自房攜帶。', costJpy: 27504, url: 'https://yumoto-noboribetu.com/', map: 'Hotel Yumoto Noboribetsu' }
+        ]
+      },
+      {
+        day: 8,
+        date: '01/15 (五)',
+        title: '登別地獄谷雪景 ➔ 函館百萬夜景',
+        area: '登別 ➔ 函館',
+        items: [
+          { time: '06:30 - 08:30', name: 'ホテルゆもと登別 晨湯交換體驗 ＆ 早餐', cat: '溫泉', note: '04:00 後男女湯對調，可泡另一側浴池（桑拿 07:00 開放）；2F 餐廳「ポプラ」和洋自助早餐 07:00–09:30（可另選 08:00 開門的 adex BAKERY&CAFE）。', costJpy: 0, url: 'https://www.adexinn.com/ja-bakerycafe', map: 'adex BAKERY&CAFE Noboribetsu' },
+          { time: '08:30 - 10:30', name: '登別地獄谷散策', cat: '景點', note: '白雪覆蓋的火山谷地與裊裊硫磺白煙。', costJpy: 0, map: 'Noboribetsu Jigokudani' },
+          { time: '11:30 - 14:15', name: 'JR 特急北斗號 登別 ➔ 函館', cat: '交通', note: '全車指定席 ¥7,390/人，沿途欣賞噴火灣海景。', costJpy: 14780, map: 'JR Hakodate Station' },
+          { time: '14:30 - 15:15', name: 'Hotel Resol 函館 Check-in（已訂）', cat: '住宿', note: '【已訂妥 2 晚 ¥12,740】15㎡ 全室脫鞋式設計，JR 函館站步行 3 分、對面即函館朝市，大廳免費迎賓飲料吧至 24:00；領取宅急便大行李。', costJpy: 12740, url: 'https://zh-cht.www.resol-hotel.jp/hakodate/', map: 'Hotel Resol Hakodate' },
+          { time: '15:30 - 17:30', name: '金森紅磚倉庫群', cat: '景點', note: '明治時代紅磚倉庫與港邊雪景漫步。', costJpy: 0, map: 'Kanemori Red Brick Warehouse' },
+          { time: '18:00 - 20:00', name: '函館山百萬夜景（纜車來回）', cat: '景點', note: '冬夜空氣清澈，可俯瞰雙弧海灣燈火。', costJpy: 3600, map: 'Mount Hakodate Ropeway' }
+        ]
+      },
+      {
+        day: 9,
+        date: '01/16 (六)',
+        title: '函館朝市 ➔ 五稜郭六花亭 ＆ 越前屋試飲 ➔ 冬花火',
+        area: '函館',
+        items: [
+          { time: '07:00 - 08:30', name: '函館朝市（現釣烏賊・海鮮早餐）', cat: '美食', note: '站前飯店步行 1–3 分鐘即達，早起免排隊。', costJpy: 4500, map: 'Hakodate Morning Market' },
+          { time: '09:00 - 12:00', name: '大沼公園 或 市區替代點（摩周丸／修道院／猴子泡湯）', cat: '景點', note: '若不去大沼公園，推薦步行 4 分的「摩周丸（¥500）」或搭巴士去「女子修道院／熱帶植物園看猴子泡溫泉」。', costJpy: 1000, url: 'https://www.hakobura.jp/spots/531', map: 'Hakodate Mashumaru' },
+          { time: '13:00 - 14:30', name: '五稜郭塔 ＆ 六花亭五稜郭店內用甜點', cat: '甜點', note: '在五稜郭店內用現吃「蘭姆葡萄奶油夾心餅乾」，買「焦糖牛奶糖 ＆ 六花之露酒糖」帶回台灣！', costJpy: 4500, map: 'Rokkatei Goryokaku' },
+          { time: '14:45 - 15:45', name: '酒ブティック 越前屋（500 元試飲）', cat: '美食', note: '【務必準備 ¥100 硬幣！】週六營業 10:00–19:00。2F 投幣機 ¥100/杯，¥500 可試喝 5 種北海道地酒！', costJpy: 1500, url: 'https://www.etizenya.jp/%E5%BA%97%E8%88%97%E6%83%85%E5%A0%B1/%E6%9C%89%E6%96%99%E8%A9%A6%E9%A3%B2%E8%A9%A6%E9%A3%B2%E3%82%B3%E3%83%BC%E3%83%8A%E3%83%BC/', map: 'Sake Boutique Echizenya Hakodate' },
+          { time: '16:30 - 18:30', name: '五稜星之夢點燈 ＆ 湯之川冬季花火（18:00）', cat: '景點', note: '欣賞星形城郭點燈後，可搭市電至湯之川看 18:00 冬季煙火。', costJpy: 0, map: 'Goryokaku Tower' }
+        ]
+      },
+      {
+        day: 10,
+        date: '01/17 (日)',
+        title: '函館最後採買 ➔ 返抵台灣',
+        area: '函館 ➔ 桃園',
+        items: [
+          { time: '09:00 - 14:30', name: '函館市區補買伴手禮 ＆ 午餐', cat: '購物', note: '將六花之露酒糖、北菓樓米果等戰利品裝箱整理。', costJpy: 4000, map: 'JR Hakodate Station' },
+          { time: '15:15 - 15:35', name: '函館帝產巴士 函館站前 ➔ 函館機場', cat: '交通', note: '車程約 20 分鐘（¥500/人），直達國際線航廈。', costJpy: 1000, map: 'Hakodate Airport' },
+          { time: '18:00 - 21:40', name: '星宇 JX861 函館 ➔ 桃園', cat: '航班', note: '平安賦歸，結束 10 天 9 夜雪國之旅！', costJpy: 0 }
+        ]
+      }
+    ];
+
+    const MUST_EAT = [
+      { id: 'f1', name: '麵屋 雪風（薄野本店）', day: 'D3 晚餐', detail: '僅現金/PayPay（不收信用卡）｜濃厚味噌拉麵現場排隊名店', url: 'https://menyayukikaze.com/shop/' },
+      { id: 'f2', name: '奧芝商店 駅前創成寺', day: 'D2 午餐', detail: '可刷卡/PayPay｜鮮蝦湯咖哩×宗谷黑牛漢堡排（11:00–22:00）', url: 'https://www.bring-you.info/zh-tw/soup-curry-okushiba' },
+      { id: 'f3', name: '成吉思汗 大黑屋（札幌薄野店）', day: 'D2 晚餐', detail: '可線上預約／現場抽整理券｜新鮮小羔羊炭火烤肉', url: 'https://www.bigfang.tw/blog/post/jingisukan-daikokuya-sapporo1go' },
+      { id: 'f4', name: 'Majisand 水果三明治專賣店', day: 'D1 下午', detail: '狸小路 1 丁目（11:00–20:00）', url: 'https://majisand.shop/' },
+      { id: 'f5', name: '湯咖哩 Suage+ 本店', day: 'D1 晚餐', detail: '僅現金/PayPay（不收信用卡）｜無預約無整理券，脆皮知床雞肉串湯咖哩', url: 'https://suage.info/stores/suage-plus/' },
+      { id: 'f6', name: 'GELATERIA La Giostra', day: 'D1 宵夜', detail: '狸小路 7 丁目義式冰淇淋（週五六至 24:00）', url: '' },
+      { id: 'f7', name: '札幌中央批發市場 場外市場', day: 'D4 早午餐', detail: '烤螃蟹早午餐（JR 桑園站步行 8–10 分）', url: 'https://www.visit-hokkaido.jp/tw/spot/detail_10005.html' },
+      { id: 'f8', name: '北海道大學 － 北大マルシェ Café & Labo', day: 'D3 午餐/午茶', detail: '必買：牛乳布丁、年輪蛋糕、可麗露、發酵奶油蛋糕、紋別奶油霜蛋糕', url: 'https://marche-cafelabo.com/' },
+      { id: 'f9', name: '六花亭（五稜郭店內用甜點）', day: 'D9 下午', detail: '蘭姆葡萄夾心餅乾（現吃）；焦糖牛奶糖＆六花之露酒糖（買回台灣）', url: '' },
+      { id: 'f10', name: '雪印 Parlor 札幌本店', day: 'D2 下午', detail: '昭和天皇御用 Snow Royal 冰淇淋（10:00–19:00）', url: 'https://www.gltjp.com/zh-hant/directory/item/13764/' },
+      { id: 'f11', name: '芭菲、咖啡、酒、佐藤', day: 'D2 宵夜', detail: '收尾聖代必點：鹽味焦糖與開心果', url: 'https://hokkaido.letsgojp.com/archives/565323/' },
+      { id: 'f12', name: 'Un délice (アンデリス) 小樽', day: 'D4 下午', detail: '布丁大福、余市威士忌布丁、布丁銅鑼燒（週一有開）', url: 'https://shinblog.com.tw/undelice/' },
+      { id: 'f13', name: '小樽三角市場（豐田商店＋4 大海鮮食堂）', day: 'D4 午餐', detail: '滝波食堂可抽整理券｜市場小店備現金｜豐田商店水果；推薦公帝王蟹', url: 'https://otaru-takinami.com/fr/16' },
+      { id: 'f14', name: '北菓樓（札幌本館／小樽）', day: 'D2 / D4', detail: '現場有試吃！夢不思議泡芙、北菓樓米果綜合包', url: 'https://www.visit-hokkaido.jp/tw/spot/detail_12970.html' },
+      { id: 'f15', name: '狸小路 SEIS 居酒屋', day: 'D3 宵夜', detail: '狸小路 6 丁目羽釜銀飯與地酒（假日建議訂位）', url: 'https://seis.gorp.jp/' }
+    ];
+
+    const BOOKINGS = [
+      { id: 'b1', name: 'KKday / Klook 旭川動物園＋雪上活動＋精靈露台一日遊', when: '出發前 1–2 個月預訂（建議選 01/12 週二）' },
+      { id: 'b2', name: '定山溪 河童 Liner 號預約（去回程）', when: '最晚 01/12 (二) 17:00 前預約 01/13 班次' },
+      { id: 'b3', name: '成吉思汗 大黑屋（札幌薄野分店）訂位', when: '預計 01/09 (六) 晚餐，建議提前 1 個月預約' },
+      { id: 'b4', name: '狸小路 SEIS 居酒屋訂位', when: '預計 01/10 (日) 晚上，假日建議先訂位' },
+      { id: 'b5', name: 'JR 北海道特急指定席（札幌➔登別➔函館）', when: '乘車日 1 個月前（12 月中旬）於 JR 官網劃位' },
+      { id: 'b6', name: '黑貓宅急便寄送大行李（札幌 ➔ 函館飯店）', when: '01/14 (四) 早上於 Hotel Vista 櫃檯寄出' },
+      { id: 'b7', name: '✅ ホテルゆもと登別（已訂・10 疊和室 ¥27,504）', when: '已確認預訂（01/14 入住 1 晚・登別牛會席）' }
+    ];
+
+    const CAT_STYLE = {
+      '航班': 'bg-indigo-100 text-indigo-800',
+      '交通': 'bg-sky-100 text-sky-800',
+      '住宿': 'bg-emerald-100 text-emerald-800',
+      '美食': 'bg-rose-100 text-rose-800',
+      '甜點': 'bg-pink-100 text-pink-800',
+      '景點': 'bg-amber-100 text-amber-800',
+      '購物': 'bg-violet-100 text-violet-800',
+      '溫泉': 'bg-teal-100 text-teal-800'
+    };
+
+    let activeDay = 'ALL';
+    let foodChecked = {};
+    let bookingChecked = {};
+
+    try {
+      foodChecked = JSON.parse(localStorage.getItem('hkd2027_food') || '{}');
+      bookingChecked = JSON.parse(localStorage.getItem('hkd2027_booking') || '{}');
+    } catch (e) {
+      foodChecked = {};
+      bookingChecked = {};
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('hkd2027_food', JSON.stringify(foodChecked));
+        localStorage.setItem('hkd2027_booking', JSON.stringify(bookingChecked));
+      } catch (e) {}
+    }
+
+    function getRate() {
+      const val = parseFloat(document.getElementById('rateInput').value);
+      return Number.isFinite(val) && val > 0 ? val : 4.84;
+    }
+
+    function renderDayFilters() {
+      const bar = document.getElementById('dayFilterBar');
+      const pills = [{ id: 'ALL', label: '全部 10 天' }].concat(
+        DAYS.map(d => ({ id: String(d.day), label: `D${d.day} ${d.date.slice(0, 5)}` }))
+      );
+      bar.innerHTML = pills.map(p => {
+        const isActive = activeDay === p.id;
+        return `<button type="button" data-day="${p.id}" class="day-pill shrink-0 min-h-[40px] px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+          isActive
+            ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+        }">${p.label}</button>`;
+      }).join('');
+    }
+
+    function renderItinerary() {
+      const rate = getRate();
+      const list = document.getElementById('itineraryList');
+      const filtered = activeDay === 'ALL' ? DAYS : DAYS.filter(d => String(d.day) === activeDay);
+
+      list.innerHTML = filtered.map(d => {
+        const dayTotalJpy = d.items.reduce((acc, it) => acc + (it.costJpy || 0), 0);
+        const dayTotalTwd = Math.round(dayTotalJpy / rate);
+        const itemsHtml = d.items.map(it => {
+          const badge = CAT_STYLE[it.cat] || 'bg-slate-100 text-slate-800';
+          const costTag = it.costJpy > 0
+            ? `<span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">¥${it.costJpy.toLocaleString()} <span class="text-slate-400">(~NT$${Math.round(it.costJpy / rate).toLocaleString()})</span></span>`
+            : '';
+          const urlBtn = it.url
+            ? `<a href="${it.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[38px] px-3 py-1 text-xs font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">資訊 ↗</a>`
+            : '';
+          const mapBtn = it.map
+            ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.map)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[38px] px-3 py-1 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 border border-slate-200">📍 地圖</a>`
+            : '';
+
+          return `
+            <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+              <div class="flex items-start justify-between gap-2">
+                <div class="space-y-0.5">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-xs font-bold text-sky-700">${it.time}</span>
+                    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full ${badge}">${it.cat}</span>
+                  </div>
+                  <h3 class="text-sm font-bold text-slate-900 leading-snug">${it.name}</h3>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">${it.note}</p>
+              <div class="flex items-center justify-between flex-wrap gap-2 pt-0.5">
+                <div>${costTag}</div>
+                <div class="flex items-center gap-1.5">${urlBtn}${mapBtn}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200/80 shadow-sm space-y-2.5">
+            <div class="flex items-center justify-between gap-2 px-1">
+              <div>
+                <div class="text-xs font-bold text-sky-700">Day ${d.day} · ${d.date} · ${d.area}</div>
+                <h2 class="text-base font-bold text-slate-900">${d.title}</h2>
+              </div>
+              ${dayTotalJpy > 0 ? `<div class="text-right shrink-0"><div class="text-xs font-bold text-slate-800">¥${dayTotalJpy.toLocaleString()}</div><div class="text-[11px] text-slate-500">約 NT$${dayTotalTwd.toLocaleString()}</div></div>` : ''}
+            </div>
+            <div class="space-y-2">${itemsHtml}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderFoodList() {
+      const container = document.getElementById('foodList');
+      const total = MUST_EAT.length;
+      const doneCount = MUST_EAT.filter(f => foodChecked[f.id]).length;
+      document.getElementById('foodProgressText').textContent = `${doneCount} / ${total}`;
+      document.getElementById('foodProgressBar').style.width = `${Math.round((doneCount / total) * 100)}%`;
+
+      container.innerHTML = MUST_EAT.map(f => {
+        const checked = !!foodChecked[f.id];
+        return `
+          <div class="flex items-start gap-3 p-3.5 bg-white rounded-2xl border ${checked ? 'border-purple-300 bg-purple-50/40' : 'border-slate-200'} shadow-sm">
+            <input type="checkbox" id="chk-${f.id}" data-food-id="${f.id}" ${checked ? 'checked' : ''} class="food-chk mt-1 w-5 h-5 accent-purple-600 rounded shrink-0 cursor-pointer" />
+            <label for="chk-${f.id}" class="flex-1 cursor-pointer space-y-1">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="text-sm font-bold ${checked ? 'line-through text-slate-400' : 'text-slate-900'}">${f.name}</span>
+                <span class="text-[11px] font-semibold bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full">${f.day}</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">${f.detail}</p>
+            </label>
+            ${f.url ? `<a href="${f.url}" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center min-h-[38px] px-2.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700">連結 ↗</a>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderBookingList() {
+      const container = document.getElementById('bookingList');
+      const done = BOOKINGS.filter(b => bookingChecked[b.id]).length;
+      document.getElementById('bookingProgressText').textContent = `${done} / ${BOOKINGS.length}`;
+
+      container.innerHTML = BOOKINGS.map(b => {
+        const checked = !!bookingChecked[b.id];
+        return `
+          <label class="flex items-start gap-3 p-3 rounded-xl border ${checked ? 'border-sky-300 bg-sky-50/50' : 'border-slate-200 bg-slate-50'} cursor-pointer">
+            <input type="checkbox" data-booking-id="${b.id}" ${checked ? 'checked' : ''} class="booking-chk mt-0.5 w-5 h-5 accent-sky-600 rounded shrink-0" />
+            <div class="space-y-0.5">
+              <div class="text-xs sm:text-sm font-bold ${checked ? 'line-through text-slate-400' : 'text-slate-900'}">${b.name}</div>
+              <div class="text-xs text-slate-600">${b.when}</div>
+            </div>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function updateCurrency() {
+      const rate = getRate();
+      document.getElementById('headerRate').textContent = rate.toFixed(2).replace(/\.00$/, '');
+      const jpy = parseFloat(document.getElementById('jpyInput').value);
+      const twd = Number.isFinite(jpy) && jpy >= 0 ? Math.round(jpy / rate) : 0;
+      document.getElementById('twdOutput').textContent = `NT$ ${twd.toLocaleString()}`;
+      renderItinerary();
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`panel-${tabName}`).classList.remove('hidden');
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const active = btn.dataset.tab === tabName;
+        btn.className = `tab-btn min-h-[44px] rounded-xl text-xs sm:text-sm font-semibold transition px-1 py-2 ${
+          active ? 'bg-sky-500 text-white shadow' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+        }`;
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.addEventListener('click', (e) => {
+      const tabBtn = e.target.closest('.tab-btn');
+      if (tabBtn) {
+        switchTab(tabBtn.dataset.tab);
+        return;
+      }
+      const dayPill = e.target.closest('.day-pill');
+      if (dayPill) {
+        activeDay = dayPill.dataset.day;
+        renderDayFilters();
+        renderItinerary();
+      }
+    });
+
+    document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('food-chk')) {
+        foodChecked[e.target.dataset.foodId] = e.target.checked;
+        saveState();
+        renderFoodList();
+      } else if (e.target.classList.contains('booking-chk')) {
+        bookingChecked[e.target.dataset.bookingId] = e.target.checked;
+        saveState();
+        renderBookingList();
+      }
+    });
+
+    document.getElementById('jpyInput').addEventListener('input', updateCurrency);
+    document.getElementById('rateInput').addEventListener('input', updateCurrency);
+
+    renderDayFilters();
+    renderItinerary();
+    renderFoodList();
+    renderBookingList();
+    updateCurrency();
+  </script>
+</body>
+</html>
