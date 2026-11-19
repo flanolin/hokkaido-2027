@@ -109,6 +109,47 @@
       </div>
       <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="foodFilterBar"></div>
       <div id="foodList" class="space-y-3"></div>
+
+      <!-- Dual-City Coverage Card -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2">
+        <h3 class="text-sm font-bold text-slate-900">🎁 伴手禮 / 餐廳雙城補買對照（札幌 ⇄ 函館）</h3>
+        <ul class="text-xs text-slate-700 space-y-1.5 leading-relaxed">
+          <li>• <span class="font-bold">六花亭</span>：札幌・小樽・<span class="font-semibold">函館五稜郭店 / 函館機場</span>皆有（短效期奶油夾心餅留函館買）。</li>
+          <li>• <span class="font-bold">北菓樓</span>：泡芙限札幌/小樽本館；常溫<span class="font-semibold">開拓米果</span>於<span class="font-semibold">函館機場國內線 2F</span>也可補買。</li>
+          <li>• <span class="font-bold">LeTAO / Royce / Snaffle's</span>：函館機場國內線 2F 皆有設櫃（Snaffle's 源自函館，留 Day 9–10 買最新鮮）。</li>
+          <li>• <span class="font-bold">成吉思汗 大黑屋</span>：除札幌薄野店，函館亦有<span class="font-semibold">函館五稜郭店</span>（16:00–23:00）。</li>
+        </ul>
+      </div>
+
+      <!-- Breakfast Guide Card (4 Types) -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2.5">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900">☀️ 住宿周邊早餐推薦（四大類型）</h3>
+          <p class="text-[11px] text-slate-500">札幌（Hotel Vista 大通）＆ 函館（Hotel Resol 站前）皆不含早餐</p>
+        </div>
+        <div class="space-y-2 text-xs text-slate-700 leading-relaxed">
+          <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200">
+            <div class="font-bold text-amber-900">🍚 大眾食堂</div>
+            <div>• 札幌：<span class="font-semibold">名代にぎりめし</span>（薄野市場 24H 無休・現捏飯糰豚汁）、<span class="font-semibold">二條市場</span>（07:00 起無休）。</div>
+            <div>• 函館：<span class="font-semibold">きくよ食堂 本店</span>（冬季 06:00–14:00 無休）、<span class="font-semibold">朝市食堂 二番館</span>（08:00–14:00 無休）。</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-sky-50/70 border border-sky-200">
+            <div class="font-bold text-sky-900">🐟 日式定食</div>
+            <div>• 札幌：<span class="font-semibold">朝れもん</span>（薄野 06:00–11:00 無休・清晨烤魚和食定食）、<span class="font-semibold">やよい軒 札幌駅南口店</span>（10:00–23:00 無休）。</div>
+            <div>• 函館：<span class="font-semibold">函館朝市烤魚定食（馬子とやすべ等）</span>（06:00–13:30・現烤花魚定食與味噌湯）。</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-orange-50/70 border border-orange-200">
+            <div class="font-bold text-orange-900">☕ 復古喫茶店</div>
+            <div>• 札幌：<span class="font-semibold">Cafe Ranban（カフェランバン）</span>（08:00–18:00 週四休・就在 Hotel Vista 旁，自家烘焙＋蛋沙拉吐司）。</div>
+            <div>• 函館：<span class="font-semibold">十字屋珈琲店 函館駅二朝市店</span>（07:00–12:00 週三休・1932 年老牌手沖咖啡）。</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-purple-50/70 border border-purple-200">
+            <div class="font-bold text-purple-900">🥐 咖啡廳 Morning Set</div>
+            <div>• 札幌：<span class="font-semibold">MORIHICO. 藝術劇場店</span>（09:00–19:00 無休）、<span class="font-semibold">Saera 三明治</span>（10:00–18:00 週三休・地下街直達）。</div>
+            <div>• 函館：<span class="font-semibold">客美多咖啡 函館港濱店</span>（07:00–23:00 無休・點咖啡送厚片吐司水煮蛋）。</div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- TAB 3: BUDGET & EXPENSE TRACKER -->
@@ -453,9 +494,9 @@
         title: '場外市場烤螃蟹 ➔ 小樽深度散策（早點回飯店休息）',
         area: '札幌桑園・小樽',
         items: [
-          { time: '08:30 - 11:00', name: '札幌市中央批發市場 場外市場（早午餐烤螃蟹）', cat: '美食', hours: '06:00–15:00（全年無休）', note: 'JR 札幌站搭函館本線 1 站（3 分鐘 ¥210）至「JR 桑園站」，步行 8–10 分鐘即達。', costJpy: 8000, url: 'https://www.visit-hokkaido.jp/tw/spot/detail_10005.html', map: 'Sapporo Jogai Market' },
+          { time: '08:30 - 11:00', name: '札幌場外市場 － 北のグルメ亭（北之美味亭）', cat: '美食', hours: '07:00–15:00（全年無休）', note: '場外市場老字號海鮮食堂（提供免費飯店接駁或 JR 桑園站步行 8 分）。吃烤帝王蟹、海鮮丼！', costJpy: 10000, url: 'https://www.kitanogurume.co.jp/zh-tw/', map: 'Kitano Gurume Tei Sapporo' },
           { time: '11:10 - 12:00', name: 'JR 桑園站 ➔ JR 小樽站', cat: '交通', hours: '每日約 06:00–23:30 密集發車（無休）', note: '吃完早午餐走回桑園站直接搭函館本線往小樽（約 40 分鐘），中午 12:00 左右準時抵小樽！', costJpy: 1600, map: 'JR Otaru Station' },
-          { time: '12:15 - 14:00', name: '小樽三角市場（海鮮丼＋豐田商店水果）', cat: '美食', hours: '市場 07:00–17:00 / 滝波食堂 07:00–17:30（全年無休）', note: '【滝波食堂可現場抽整理券候位｜市場建議備現金】排名：1.滝波 2.武田 3.はやしや 4.惠比壽櫻。選「公的帝王蟹」！飯後吃豐田商店切片水果。', costJpy: 9000, url: 'https://otaru-takinami.com/fr/16', map: 'Otaru Sankaku Market' },
+          { time: '12:15 - 14:15', name: '堺町通商店街 ＆ 北菓樓小樽本館', cat: '購物', hours: '北菓樓小樽本館 10:00–18:00（僅元旦休）', note: '直接開逛堺町通，現吃北菓樓夢不思議泡芙、逛 LeTAO 與小樽音樂盒堂。', costJpy: 3000, map: 'Kitakaro Otaru Main Shop' },
           { time: '14:30 - 15:30', name: 'Un délice (アンデリス) 布丁專賣店', cat: '甜點', hours: '10:00–17:00（週二・週三公休，週一正常營業）', note: '必買：布丁大福、余市威士忌布丁、布丁銅鑼燒。', costJpy: 2000, url: 'https://shinblog.com.tw/undelice/', map: 'Un delice Otaru' },
           { time: '15:30 - 19:00', name: '堺町通商店街 ＆ 小樽「青之運河」點燈', cat: '景點', hours: '北菓樓小樽本館 10:00–18:00（僅元旦休）/ 點燈 日落–22:30', note: '中午到小樽可悠閒逛完整條堺町通、北菓樓小樽本館，傍晚看藍調運河點燈。', costJpy: 0, map: 'Otaru Canal' },
           { time: '19:27 / 22:31 / 23:08', name: 'JR 函館本線 小樽 ➔ 札幌（建議搭 19:27 回程）', cat: '交通', hours: '快速 Airport 末班 19:27 / 普通車最終 23:08（無休）', note: '建議看完運河點燈搭 19:27–20:00 左右班次早點回札幌休息，留體力給隔天旭川專車！', costJpy: 1600, url: 'https://www.navitime.co.jp/diagram/depArrTimeList?departure=00003724&arrival=00002928&line=00000227&updown=1', map: 'JR Otaru Station' }
@@ -468,7 +509,7 @@
         area: '旭川・美瑛・富良野',
         items: [
           { time: '07:45 - 19:15', name: 'KKday / Klook 札幌出發一日遊專車', cat: '景點', hours: '旭山動物園 10:30–15:30（僅 12/30–1/1 休園）', note: '連休後平日人最少！串聯「旭山動物園（11:00 企鵝散步）」＋「四季彩之丘（雪上摩托車）」＋「森林精靈露台」。若遇大雪取消可與 Day 6 對調。', costJpy: 18000, url: 'https://www.kkday.com/zh-hk/product/135996-hokkaido-sapporo-asahiyama-zoo-biei-blue-pond-tour-japan', map: 'Asahiyama Zoo' },
-          { time: '19:30 - 21:00', name: '薄野／狸小路彈性晚餐', cat: '美食', hours: '依各店營業至 22:00–24:00', note: '回札幌後就近於飯店周邊用餐休息。', costJpy: 5000, map: 'Susukino Station' }
+          { time: '19:30 - 21:15', name: '札幌かに本家（螃蟹本家）札幌站前本店', cat: '美食', hours: '11:30–22:00（L.O. 21:30・全年無休）', note: '【薄野店已永久歇業｜建議先線上預約】專車在札幌站解散步行 3–5 分即達，專人服務螃蟹會席料理！', costJpy: 16000, url: 'https://www.kani-honke.co.jp/post/%E6%9C%AD%E5%B9%8C%E3%81%8B%E3%81%AB%E6%9C%AC%E5%AE%B6-%E6%9C%AD%E5%B9%8C%E9%A7%85%E5%89%8D%E6%9C%AC%E5%BA%97', map: 'Sapporo Kani Honke Sapporo Ekimae' }
         ]
       },
       {
@@ -539,12 +580,13 @@
       // 札幌 - 正餐
       { id: 'f5', area: '札幌', subArea: '薄野・狸小路', mealType: '正餐', linkedId: 'd1-5', hours: '一四 11:30–20:30 / 二三五 11:30–21:00 / 六日 11:00–21:00（無休）', name: '湯咖哩 Suage+ 本店', day: 'D1 晚餐', detail: '僅現金/PayPay（不收信用卡）｜無預約無整理券，脆皮知床雞肉串湯咖哩', url: 'https://suage.info/stores/suage-plus/', map: 'Soup Curry Suage+ Sapporo' },
       { id: 'f2', area: '札幌', subArea: '札幌站', mealType: '正餐', linkedId: 'd2-1', hours: '11:00–15:00、17:00–21:00（無固定公休）', name: '奧芝商店 駅前創成寺', day: 'D2 午餐', detail: '可刷卡/PayPay｜鮮蝦湯咖哩×宗谷黑牛漢堡排', url: 'https://www.bring-you.info/zh-tw/soup-curry-okushiba', map: 'Okushiba Shoten Ekimae Soseiji' },
-      { id: 'f3', area: '札幌', subArea: '薄野・狸小路', mealType: '正餐', linkedId: 'd2-4', hours: '一–五 17:00–23:30 / 六日 16:00–23:30（無休）', name: '成吉思汗 大黑屋（札幌薄野店）', day: 'D2 晚餐', detail: '可線上預約／現場抽整理券｜新鮮小羔羊炭火烤肉', url: 'https://www.bigfang.tw/blog/post/jingisukan-daikokuya-sapporo1go', map: 'Daikokuya Jingisukan Sapporo' },
-      { id: 'f7', area: '札幌', subArea: '桑園(場外市場)', mealType: '正餐', linkedId: 'd4-0', hours: '06:00–15:00（全年無休）', name: '札幌中央批發市場 場外市場', day: 'D4 早午餐', detail: '烤螃蟹早午餐（JR 桑園站步行 8–10 分）', url: 'https://www.visit-hokkaido.jp/tw/spot/detail_10005.html', map: 'Sapporo Jogai Market' },
+      { id: 'f3', area: '札幌', subArea: '薄野・狸小路', mealType: '正餐', linkedId: 'd2-4', hours: '一–五 17:00–23:30 / 六日 16:00–23:30（無休）', name: '成吉思汗 大黑屋（札幌薄野店）', day: 'D2 晚餐', detail: '可線上預約／現場抽整理券｜新鮮小羔羊炭火烤肉（註：函館五稜郭也有分店）', url: 'https://www.bigfang.tw/blog/post/jingisukan-daikokuya-sapporo1go', map: 'Daikokuya Jingisukan Sapporo' },
+      { id: 'f7', area: '札幌', subArea: '桑園(場外市場)', mealType: '正餐', linkedId: 'd4-0', hours: '07:00–15:00（全年無休）', name: '北のグルメ亭（北之美味亭・場外市場）', day: 'D4 早午餐', detail: '烤帝王蟹＆海鮮丼｜可搭免費飯店接駁或 JR 桑園站步行 8 分', url: 'https://www.kitanogurume.co.jp/zh-tw/', map: 'Kitano Gurume Tei Sapporo' },
+      { id: 'f18', area: '札幌', subArea: '札幌站', mealType: '正餐', linkedId: 'd5-1', hours: '11:30–22:00（全年無休）', name: '札幌かに本家（螃蟹本家）札幌站前本店', day: 'D5 晚餐', detail: '薄野店已永久歇業｜專人服務螃蟹會席料理（建議先訂位）', url: 'https://www.kani-honke.co.jp/post/%E6%9C%AD%E5%B9%8C%E3%81%8B%E3%81%AB%E6%9C%AC%E5%AE%B6-%E6%9C%AD%E5%B9%8C%E9%A7%85%E5%89%8D%E6%9C%AC%E5%BA%97', map: 'Sapporo Kani Honke Sapporo Ekimae' },
       // 札幌 - 甜點
       { id: 'f4', area: '札幌', subArea: '薄野・狸小路', mealType: '甜點', linkedId: 'd1-3', hours: '11:00–20:00（無休）', name: 'Majisand 水果三明治專賣店', day: 'D1 下午', detail: '狸小路 1 丁目｜北海道鮮奶油×當季水果戚風吐司', url: 'https://majisand.shop/', map: 'Majisand Sapporo' },
       { id: 'f10', area: '札幌', subArea: '札幌站・大通', mealType: '甜點', linkedId: 'd2-2', hours: '10:00–19:00（L.O. 18:30・僅歲末年初休）', name: '雪印 Parlor 札幌本店', day: 'D2 下午', detail: '昭和天皇御用 Snow Royal 冰淇淋', url: 'https://www.gltjp.com/zh-hant/directory/item/13764/', map: 'Snow Brand Parlor Sapporo' },
-      { id: 'f14', area: '札幌', subArea: '札幌站・大通', mealType: '甜點', linkedId: 'd2-3', hours: '賣店 10:00–18:00（無休）/ 咖啡廳 11:00–16:00（週二休）', name: '北菓樓 札幌本館', day: 'D2 下午', detail: '現場有試吃！夢不思議泡芙、北菓樓米果綜合包', url: 'https://www.visit-hokkaido.jp/tw/spot/detail_12970.html', map: 'Kitakaro Sapporo Honkan' },
+      { id: 'f14', area: '札幌', subArea: '札幌站・大通', mealType: '甜點', linkedId: 'd2-3', hours: '賣店 10:00–18:00（無休）/ 咖啡廳 11:00–16:00（週二休）', name: '北菓樓 札幌本館', day: 'D2 下午', detail: '現場有試吃！泡芙需在札幌/小樽吃；常溫開拓米果在函館機場 2F 也買得到', url: 'https://www.visit-hokkaido.jp/tw/spot/detail_12970.html', map: 'Kitakaro Sapporo Honkan' },
       { id: 'f8', area: '札幌', subArea: '北大', mealType: '甜點', linkedId: 'd6-2', hours: '冬季 10:00–17:00（僅歲末年初休）', name: '北海道大學 － 北大マルシェ Café & Labo', day: 'D6 午茶', detail: '必買：牛乳布丁、年輪蛋糕、可麗露、發酵奶油蛋糕、紋別奶油霜蛋糕', url: 'https://marche-cafelabo.com/', map: 'Hokudai Marche Cafe & Labo' },
       // 札幌 - 宵夜
       { id: 'f6', area: '札幌', subArea: '薄野・狸小路', mealType: '宵夜', linkedId: 'd1-6', hours: '僅週五・週六 20:00–24:00（週日–四公休）', name: 'GELATERIA La Giostra', day: 'D1 宵夜', detail: '狸小路 7 丁目義式冰淇淋｜推薦開心果與教皇之鹽', url: '', map: 'GELATERIA La Giostra Sapporo' },
@@ -554,13 +596,12 @@
       // 定山溪 - 甜點
       { id: 'f16', area: '定山溪', subArea: '溫泉街', mealType: '甜點', linkedId: 'd3-2', hours: '09:30–17:00（不定休）', name: 'J・glacée 蘋果派', day: 'D3 下午', detail: '定山溪溫泉街現烤蘋果派（可配咖啡去泡豐平峽溫泉）', url: 'https://jozankei.jp/tw/store/j-glacee/', map: 'J glacee Jozankei' },
       // 小樽 - 正餐
-      { id: 'f13', area: '小樽', subArea: '小樽站旁', mealType: '正餐', linkedId: 'd4-2', hours: '市場 07:00–17:00 / 滝波食堂 07:00–17:30（全年無休）', name: '小樽三角市場（豐田商店＋4 大海鮮食堂）', day: 'D4 午餐', detail: '滝波食堂可抽整理券｜市場小店備現金｜豐田商店水果；推薦公帝王蟹', url: 'https://otaru-takinami.com/fr/16', map: 'Otaru Sankaku Market' },
       // 小樽 - 甜點
       { id: 'f12', area: '小樽', subArea: '堺町通周邊', mealType: '甜點', linkedId: 'd4-3', hours: '10:00–17:00（週二・週三公休）', name: 'Un délice (アンデリス) 小樽', day: 'D4 下午', detail: '布丁大福、余市威士忌布丁、布丁銅鑼燒', url: 'https://shinblog.com.tw/undelice/', map: 'Un delice Otaru' },
       // 函館 - 正餐
       { id: 'f17', area: '函館', subArea: '函館站前', mealType: '正餐', linkedId: 'd9-0', hours: '冬季 06:00–14:00（市場無休，各店不定）', name: '函館朝市（現釣烏賊・海鮮丼）', day: 'D9 早餐', detail: 'Hotel Resol 對面步行 1–3 分鐘即達，早起免排隊', url: 'https://www.visit-hokkaido.jp/tw/spot/detail_10031.html', map: 'Hakodate Morning Market' },
       // 函館 - 甜點
-      { id: 'f9', area: '函館', subArea: '五稜郭', mealType: '甜點', linkedId: 'd9-2', hours: '賣店 09:30–17:30 / 喫茶室 10:30–16:00（週三公休）', name: '六花亭（五稜郭店內用甜點）', day: 'D9 下午', detail: '蘭姆葡萄夾心餅乾（現吃）；焦糖牛奶糖＆六花之露酒糖（買回台灣）', url: 'https://www.rokkatei.co.jp/shop/hakodate/', map: 'Rokkatei Goryokaku' }
+      { id: 'f9', area: '函館', subArea: '五稜郭', mealType: '甜點', linkedId: 'd9-2', hours: '賣店 09:30–17:30 / 喫茶室 10:30–16:00（週三公休）', name: '六花亭（五稜郭店內用甜點）', day: 'D9 下午', detail: '札幌/小樽/函館五稜郭＆函館機場皆有售，短效期夾心餅建議留到函館買', url: 'https://www.rokkatei.co.jp/shop/hakodate/', map: 'Rokkatei Goryokaku' }
     ];
 
     const BOOKINGS = [
@@ -569,7 +610,8 @@
       { id: 'b3', name: '成吉思汗 大黑屋（札幌薄野分店）訂位', when: '預計 01/09 (六) 晚餐，建議提前 1 個月預約' },
       { id: 'b4', name: '狸小路 SEIS 居酒屋訂位', when: '預計 01/10 (日) 晚上，假日建議先訂位' },
       { id: 'b5', name: 'JR 北海道特急指定席（札幌➔登別➔函館）', when: '乘車日 1 個月前（12 月中旬）於 JR 官網劃位' },
-      { id: 'b6', name: '黑貓宅急便寄送大行李（札幌 ➔ 函館飯店）', when: '01/14 (四) 早上於 Hotel Vista 櫃檯寄出' }
+      { id: 'b6', name: '黑貓宅急便寄送大行李（札幌 ➔ 函館飯店）', when: '01/14 (四) 早上於 Hotel Vista 櫃檯寄出' },
+      { id: 'b7', name: '札幌かに本家（螃蟹本家 札幌站前本店）訂位', when: '預計 01/12 (二) 19:30 晚餐，建議提前於官網或 KKday 預約' }
     ];
 
     const CAT_STYLE = {
