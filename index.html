@@ -39,7 +39,7 @@
       </div>
 
       <!-- Main Navigation Tabs -->
-      <nav class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 mt-2.5" aria-label="主選單">
+      <nav class="grid grid-cols-4 sm:grid-cols-8 gap-1.5 mt-2.5" aria-label="主選單">
         <button type="button" data-tab="itinerary" class="tab-btn min-h-[38px] rounded-xl text-xs font-semibold transition px-1 py-1.5 leading-tight bg-sky-500 text-white shadow">
           📅 行程
         </button>
@@ -54,6 +54,12 @@
         </button>
         <button type="button" data-tab="stay" class="tab-btn min-h-[38px] rounded-xl text-xs font-semibold transition px-1 py-1.5 leading-tight bg-slate-800 text-slate-300 hover:bg-slate-700">
           🏨 住宿
+        </button>
+        <button type="button" data-tab="excluded" class="tab-btn min-h-[38px] rounded-xl text-xs font-semibold transition px-1 py-1.5 leading-tight bg-slate-800 text-slate-300 hover:bg-slate-700">
+          🚫 剔除
+        </button>
+        <button type="button" data-tab="rules" class="tab-btn min-h-[38px] rounded-xl text-xs font-semibold transition px-1 py-1.5 leading-tight bg-slate-800 text-slate-300 hover:bg-slate-700">
+          📜 規則
         </button>
         <button type="button" data-tab="prefs" class="tab-btn min-h-[38px] rounded-xl text-xs font-semibold transition px-1 py-1.5 leading-tight bg-slate-800 text-slate-300 hover:bg-slate-700">
           ❤️ 偏好
@@ -122,35 +128,7 @@
       </div>
 
       <!-- Breakfast Guide Card (4 Types) -->
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2.5">
-        <div>
-          <h3 class="text-sm font-bold text-slate-900">☀️ 住宿周邊早餐推薦（四大類型）</h3>
-          <p class="text-[11px] text-slate-500">札幌（Hotel Vista 大通）＆ 函館（Hotel Resol 站前）皆不含早餐</p>
-        </div>
-        <div class="space-y-2 text-xs text-slate-700 leading-relaxed">
-          <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200">
-            <div class="font-bold text-amber-900">🍚 大眾食堂</div>
-            <div>• 札幌：<span class="font-semibold">名代にぎりめし</span>（薄野市場 24H 無休・現捏飯糰豚汁）、<span class="font-semibold">二條市場</span>（07:00 起無休）。</div>
-            <div>• 函館：<span class="font-semibold">きくよ食堂 本店</span>（冬季 06:00–14:00 無休）、<span class="font-semibold">朝市食堂 二番館</span>（08:00–14:00 無休）。</div>
-          </div>
-          <div class="p-2.5 rounded-xl bg-sky-50/70 border border-sky-200">
-            <div class="font-bold text-sky-900">🐟 日式定食</div>
-            <div>• 札幌：<span class="font-semibold">朝れもん</span>（薄野 06:00–11:00 無休・清晨烤魚和食定食）、<span class="font-semibold">やよい軒 札幌駅南口店</span>（10:00–23:00 無休）。</div>
-            <div>• 函館：<span class="font-semibold">函館朝市烤魚定食（馬子とやすべ等）</span>（06:00–13:30・現烤花魚定食與味噌湯）。</div>
-          </div>
-          <div class="p-2.5 rounded-xl bg-orange-50/70 border border-orange-200">
-            <div class="font-bold text-orange-900">☕ 復古喫茶店</div>
-            <div>• 札幌：<span class="font-semibold">Cafe Ranban（カフェランバン）</span>（08:00–18:00 週四休・就在 Hotel Vista 旁，自家烘焙＋蛋沙拉吐司）。</div>
-            <div>• 函館：<span class="font-semibold">十字屋珈琲店 函館駅二朝市店</span>（07:00–12:00 週三休・1932 年老牌手沖咖啡）。</div>
-          </div>
-          <div class="p-2.5 rounded-xl bg-purple-50/70 border border-purple-200">
-            <div class="font-bold text-purple-900">🥐 咖啡廳 Morning Set</div>
-            <div>• 札幌：<span class="font-semibold">MORIHICO. 藝術劇場店</span>（09:00–19:00 無休）、<span class="font-semibold">Saera 三明治</span>（10:00–18:00 週三休・地下街直達）。</div>
-            <div>• 函館：<span class="font-semibold">客美多咖啡 函館港濱店</span>（07:00–23:00 無休・點咖啡送厚片吐司水煮蛋）。</div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
 
     <!-- TAB 3: BUDGET & EXPENSE TRACKER -->
     <section id="panel-budget" class="tab-panel hidden space-y-3">
@@ -404,6 +382,24 @@
       </div>
     </section>
 
+    <!-- TAB: EXCLUDED ITEMS -->
+    <section id="panel-excluded" class="tab-panel hidden space-y-3">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-rose-200">
+        <h2 class="text-base font-bold text-slate-900">🚫 剔除項目紀錄（保留地區標示）</h2>
+        <p class="text-xs text-slate-500 mt-0.5">凡從原行程移除的餐廳、景點或體驗皆移入此分頁留存，並標註城市與小地區。</p>
+      </div>
+      <div id="excludedList" class="space-y-2.5"></div>
+    </section>
+
+    <!-- TAB: RULES -->
+    <section id="panel-rules" class="tab-panel hidden space-y-3">
+      <div class="bg-amber-50 border border-amber-300 rounded-2xl p-4 shadow-sm">
+        <h2 class="text-base font-bold text-amber-950">📜 行程規劃與維護規則（跨對話必遵守）</h2>
+        <p class="text-xs text-amber-900 mt-1 leading-relaxed font-semibold">⚠️ 規則 R01：每次修改或討論行程前，皆須先檢視並確認本分頁內所有現有規則，確保換對話串仍完整遵守。</p>
+      </div>
+      <div id="rulesList" class="space-y-2.5"></div>
+    </section>
+
     <!-- TAB 5: PREFERENCES -->
     <section id="panel-prefs" class="tab-panel hidden space-y-3">
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2">
@@ -476,14 +472,16 @@
       {
         day: 3,
         date: '01/10 (日)',
-        title: '定山溪點心 ＆ 豐平峽溫泉 ➔ 宵夜拉麵居酒屋',
+        title: '定山溪點心咖啡 ＆ 豐平峽溫泉 ➔ 宵夜拉麵居酒屋',
         area: '定山溪・豐平峽・薄野',
         items: [
-          { time: '09:10 - 10:15', name: '河童 Liner 號（札幌站 27 號 ➔ 定山溪）', cat: '交通', hours: '每日定時班次（全預約制・最晚前日 17:00 前預約）', note: '單程 ¥1,700/人，直達定山溪與豐平峽溫泉。', costJpy: 3400, url: 'https://www.gltjp.com/zh-hant/directory/item/13932/', map: 'Jozankei Onsen' },
-          { time: '11:00 - 12:15', name: '定山溪溫泉街 － 紅葉亭子蕎麥餐廳', cat: '美食', hours: '11:00–16:00（週三・週四公休，週日正常營業）', note: '【不收信用卡・請備現金】1927 年創業老字號手打蕎麥麵。', costJpy: 2600, url: 'https://jozankei.jp/tw/store/kouyoutei/', map: 'Kouyoutei Jozankei' },
-          { time: '12:15 - 13:15', name: '買點心咖啡去泡湯（J・glacée / 大黑屋商店）', cat: '甜點', hours: 'J・glacée 09:30–17:00（不定休）/ 大黑屋 09:00–15:00（週三公休）', note: '買齊「J・glacée 蘋果派」、「咖啡」與「大黑屋商店 溫泉黑糖饅頭（備現金）」！', costJpy: 2500, url: 'https://jozankei.jp/tw/store/j-glacee/', map: 'Daikokuya Shoten Jozankei' },
-          { time: '13:30 - 16:45', name: '豐平峽溫泉（100% 源泉掛流露天溫泉）', cat: '溫泉', hours: '10:00–22:30（全年無休）', note: '入浴費 ¥1,300/人（可刷卡/QR/現金），邊賞雪景邊泡美肌之湯。', costJpy: 2600, url: 'https://jozankei.jp/tw/oneday/hoheikyo-onsen/', map: 'Hoheikyo Onsen' },
-          { time: '17:00 - 18:10', name: '河童 Liner 號末班車返回札幌', cat: '交通', hours: '17:00 豐平峽溫泉發車（全預約制・全年行駛）', note: '直達札幌站（單程 ¥1,700/人），接著搭地鐵回薄野晚餐。', costJpy: 3400, url: 'https://www.gltjp.com/zh-hant/directory/item/13932/', map: 'Hoheikyo Onsen' },
+          { time: '09:10 - 10:06', name: '河童 Liner 號去程（札幌站 09:10／大通西1 09:13／薄野 09:18 ➔ 定山溪湯之町）', cat: '交通', hours: '全預約制（最晚 01/09 17:00 前預約）｜車程約 50–56 分', note: '確認班次：無 09:50 抵達班次，最早班 10:06 抵「定山溪湯之町」剛好接 10:00 逛店！網路預購享 ネット割 ¥1,460/人（原價 ¥1,700）。', costJpy: 2920, url: 'https://www.jotetsu.co.jp/bus/kappa_liner/', map: 'Jozankei Yunomachi Bus Stop' },
+          { time: '10:06 - 11:00', name: '大黑屋商店（黑糖溫泉饅頭）＆ J・glacée（蘋果派）', cat: '甜點', hours: '大黑屋 09:00–15:00（週三休・僅現金）/ J・glacée 09:30–17:00（不定休）', note: '下車後先買現蒸溫泉饅頭與蘋果派點心！', costJpy: 2500, url: 'https://jozankei.jp/tw/store/j-glacee/', map: 'Daikokuya Shoten Jozankei' },
+          { time: '11:00 - 12:15', name: '定山溪溫泉街 － 紅葉亭蕎麥餐廳', cat: '美食', hours: '11:00–16:00（週三・週四公休，週日正常營業）', note: '【不收信用卡・請備現金】1927 年創業老字號石磨手打蕎麥麵。', costJpy: 2600, url: 'https://jozankei.jp/tw/store/kouyoutei/', map: 'Kouyoutei Jozankei' },
+          { time: '12:30 - 13:00', name: 'tocchan cafe（貓咪主題自家烘焙咖啡）', cat: '甜點', hours: '週末假日 10:00–17:30（週一・週二休，行前確認官方 IG）', note: '前日本單板滑雪國手夫妻經營的溫馨貓咪咖啡館，飯後來杯手沖咖啡。', costJpy: 1200, url: 'https://jozankei.jp/tw/store/tocchan-cafe/', map: 'tocchan cafe Jozankei' },
+          { time: '13:00 - 13:25', name: '定山溪神社前等公車（搭路線巴士 12H 往豐平峽溫泉）', cat: '交通', hours: '一般路線巴士 12H（車程約 10–15 分，可使用 IC 卡／現金）', note: '※ 河童 Liner 號在定山溪神社前「僅能下車不可上車」，須搭一般路線巴士 12H 前往豐平峽。', costJpy: 600, url: 'https://www.jotetsu.co.jp/bus/', map: 'Jozankei Jinja Mae Bus Stop' },
+          { time: '13:30 - 16:40', name: '豐平峽溫泉（100% 源泉掛流露天溫泉）', cat: '溫泉', hours: '10:00–22:30（全年無休）', note: '入浴費 ¥1,300/人（不含毛巾，毛巾租購 ¥220～¥700），邊賞雪景邊泡美肌之湯。', costJpy: 2600, url: 'https://jozankei.jp/tw/oneday/hoheikyo-onsen/', map: 'Hoheikyo Onsen' },
+          { time: '16:40 - 18:05', name: '豐平峽溫泉等河童 Liner 末班車（17:00 發車回札幌）', cat: '交通', hours: '17:00 豐平峽溫泉末班發車（全預約制・全席自由席）', note: '16:40 到站牌排隊（17:00 發 ➔ 18:05 抵薄野／18:19 抵札幌站）；ネット割 ¥1,460/人。', costJpy: 2920, url: 'https://www.jotetsu.co.jp/bus/kappa_liner/', map: 'Hoheikyo Onsen' },
           { time: '18:45 - 20:00', name: '麵屋 雪風（薄野本店）', cat: '美食', hours: '一–四 11:00–14:00、18:00–02:30 / 五六至 03:30 / 日至 24:00（無休）', note: '【僅收現金/PayPay・不收信用卡｜現場排隊】泡完湯吃濃厚味噌拉麵超療癒！', costJpy: 2400, url: 'https://menyayukikaze.com/shop/', map: 'Menya Yukikaze Susukino' },
           { time: '20:15 - 22:00', name: '狸小路 SEIS 居酒屋（酒と銀シャリ せいす）', cat: '美食', hours: '一–六 15:00–01:00 / 日 15:00–23:00（不定休）', note: '狸小路 6 丁目，離飯店步行 2 分！建議先訂位。', costJpy: 6500, url: 'https://seis.gorp.jp/', map: 'Seisu Tanukikoji Sapporo' }
         ]
@@ -591,10 +589,10 @@
       // 札幌 - 宵夜
       { id: 'f6', area: '札幌', subArea: '薄野・狸小路', mealType: '宵夜', linkedId: 'd1-6', hours: '僅週五・週六 20:00–24:00（週日–四公休）', name: 'GELATERIA La Giostra', day: 'D1 宵夜', detail: '狸小路 7 丁目義式冰淇淋｜推薦開心果與教皇之鹽', url: '', map: 'GELATERIA La Giostra Sapporo' },
       { id: 'f11', area: '札幌', subArea: '札幌站・大通', mealType: '宵夜', linkedId: 'd2-5', hours: '日–四 13:00–24:00 / 五六 13:00–01:00（無休）', name: '芭菲、咖啡、酒、佐藤', day: 'D2 宵夜', detail: '收尾聖代必點：鹽味焦糖與開心果', url: 'https://hokkaido.letsgojp.com/archives/565323/', map: 'Parfait Coffee Liquor Sato Sapporo' },
-      { id: 'f1', area: '札幌', subArea: '薄野・狸小路', mealType: '宵夜', linkedId: 'd3-5', hours: '一–四 11:00–14:00、18:00–02:30 / 五六至 03:30 / 日至 24:00（無休）', name: '麵屋 雪風（薄野本店）', day: 'D3 晚/宵夜', detail: '僅現金/PayPay（不收信用卡）｜濃厚味噌拉麵現場排隊名店', url: 'https://menyayukikaze.com/shop/', map: 'Menya Yukikaze Susukino' },
-      { id: 'f15', area: '札幌', subArea: '薄野・狸小路', mealType: '宵夜', linkedId: 'd3-6', hours: '一–六 15:00–01:00 / 日 15:00–23:00（不定休）', name: '狸小路 SEIS 居酒屋', day: 'D3 宵夜', detail: '狸小路 6 丁目羽釜銀飯與地酒（假日建議訂位）', url: 'https://seis.gorp.jp/', map: 'Seisu Tanukikoji Sapporo' },
+      { id: 'f1', area: '札幌', subArea: '薄野・狸小路', mealType: '宵夜', linkedId: 'd3-7', hours: '一–四 11:00–14:00、18:00–02:30 / 五六至 03:30 / 日至 24:00（無休）', name: '麵屋 雪風（薄野本店）', day: 'D3 晚/宵夜', detail: '僅現金/PayPay（不收信用卡）｜濃厚味噌拉麵現場排隊名店', url: 'https://menyayukikaze.com/shop/', map: 'Menya Yukikaze Susukino' },
+      { id: 'f15', area: '札幌', subArea: '薄野・狸小路', mealType: '宵夜', linkedId: 'd3-8', hours: '一–六 15:00–01:00 / 日 15:00–23:00（不定休）', name: '狸小路 SEIS 居酒屋', day: 'D3 宵夜', detail: '狸小路 6 丁目羽釜銀飯與地酒（假日建議訂位）', url: 'https://seis.gorp.jp/', map: 'Seisu Tanukikoji Sapporo' },
       // 定山溪 - 甜點
-      { id: 'f16', area: '定山溪', subArea: '溫泉街', mealType: '甜點', linkedId: 'd3-2', hours: '09:30–17:00（不定休）', name: 'J・glacée 蘋果派', day: 'D3 下午', detail: '定山溪溫泉街現烤蘋果派（可配咖啡去泡豐平峽溫泉）', url: 'https://jozankei.jp/tw/store/j-glacee/', map: 'J glacee Jozankei' },
+      { id: 'f16', area: '定山溪', subArea: '溫泉街', mealType: '甜點', linkedId: 'd3-1', hours: '09:30–17:00（不定休）', name: 'J・glacée 蘋果派', day: 'D3 下午', detail: '定山溪溫泉街現烤蘋果派（可配咖啡去泡豐平峽溫泉）', url: 'https://jozankei.jp/tw/store/j-glacee/', map: 'J glacee Jozankei' },
       // 小樽 - 正餐
       // 小樽 - 甜點
       { id: 'f12', area: '小樽', subArea: '堺町通周邊', mealType: '甜點', linkedId: 'd4-3', hours: '10:00–17:00（週二・週三公休）', name: 'Un délice (アンデリス) 小樽', day: 'D4 下午', detail: '布丁大福、余市威士忌布丁、布丁銅鑼燒', url: 'https://shinblog.com.tw/undelice/', map: 'Un delice Otaru' },
@@ -606,12 +604,53 @@
 
     const BOOKINGS = [
       { id: 'b1', name: 'KKday / Klook 旭川動物園＋雪上活動＋精靈露台一日遊', when: '出發前 1–2 個月預訂（建議選 01/12 週二）' },
-      { id: 'b2', name: '定山溪 河童 Liner 號預約（去回程）', when: '最晚 01/09 (六) 17:00 前預約 01/10 (日) 班次' },
+      { id: 'b2', name: '定山溪 河童 Liner 號預約（去回程）', when: '去程 09:10 札幌（09:13 大通西1／09:18 薄野）➔ 10:06 定山溪湯之町；回程 17:00 豐平峽溫泉末班車，最晚 01/09 (六) 17:00 前預約（ネット割 ¥1,460/人）' },
       { id: 'b3', name: '成吉思汗 大黑屋（札幌薄野分店）訂位', when: '預計 01/09 (六) 晚餐，建議提前 1 個月預約' },
       { id: 'b4', name: '狸小路 SEIS 居酒屋訂位', when: '預計 01/10 (日) 晚上，假日建議先訂位' },
       { id: 'b5', name: 'JR 北海道特急指定席（札幌➔登別➔函館）', when: '乘車日 1 個月前（12 月中旬）於 JR 官網劃位' },
       { id: 'b6', name: '黑貓宅急便寄送大行李（札幌 ➔ 函館飯店）', when: '01/14 (四) 早上於 Hotel Vista 櫃檯寄出' },
       { id: 'b7', name: '札幌かに本家（螃蟹本家 札幌站前本店）訂位', when: '預計 01/12 (二) 19:30 晚餐，建議提前於官網或 KKday 預約' }
+    ];
+
+
+    const BREAKFAST_OPTS = {
+      sapporo: [
+        { id: 'brk-arinko', type: '🍙 飯糰專門店', name: 'おにぎりのありんこ オーロラタウン店', hours: '08:00–20:00（無休）', note: '⭐ Day 3 外帶首選｜大通地下街直結，現點現捏三角飯糰方便帶上車', url: 'https://www.sapporo-chikagai.jp/shop/single/18', map: 'Onigiri no Arinko Aurora Town Sapporo' },
+        { id: 'brk-nigirimeshi', type: '🍙 飯糰・食堂', name: '名代にぎりめし（薄野市場）', hours: '24H 營業（無休）', note: '⭐ Day 3 外帶首選｜離飯店 5 分，現捏飯糰與豚汁可外帶或內用', url: 'https://r.gnavi.co.jp/rdkpycdw0000/', map: 'Nadai Nigirimeshi Sapporo' },
+        { id: 'brk-nijo', type: '🍚 大眾食堂', name: '二條市場海鮮早餐', hours: '07:00–17:00（無休）', note: '步行約 8 分，現烤干貝與海鮮丼', url: 'https://www.hopetrip.com/news/detail-30839.html', map: 'Nijo Market Sapporo' },
+        { id: 'brk-asalemon', type: '🐟 日式定食', name: '朝れもん（薄野）', hours: '06:00–11:00（無休）', note: '清晨現烤魚和食定食，安靜吃早餐', url: 'https://www.hopetrip.com/news/detail-30839.html', map: 'Asalemon Susukino Sapporo' },
+        { id: 'brk-yayoiken', type: '🐟 日式定食', name: 'やよい軒 札幌駅南口店', hours: '10:00–23:00（無休）', note: '札幌站南口平價日式定食（10:00 開門）', url: 'https://www.yayoiken.com/', map: 'Yayoiken Sapporo Station South' },
+        { id: 'brk-ranban', type: '☕ 復古喫茶店', name: 'Cafe Ranban（カフェランバン）', hours: '08:00–18:00（週四休）', note: '就在 Hotel Vista 旁！自家烘焙咖啡＋蛋沙拉吐司', url: 'https://www.bigfang.tw/blog/post/cafe-ranban-sapporo', map: 'Cafe Ranban Sapporo' },
+        { id: 'brk-morihico', type: '🥐 咖啡廳', name: 'MORIHICO. 藝術劇場店', hours: '09:00–19:00（無休）', note: '大通直結市民交流中心 1F，質感手沖早午餐', url: 'https://www.bigfang.tw/blog/post/sapporo-cafe-dessert', map: 'MORIHICO Art Theater Sapporo' },
+        { id: 'brk-saera', type: '🥐 咖啡廳', name: 'Saera 咖啡與三明治店', hours: '10:00–18:00（週三休）', note: '地下街直達，人氣帝王蟹肉＆水果三明治', url: 'https://tasting-japan.com/archives/4842', map: 'Coffee and Sandwich Saera Sapporo' }
+      ],
+      hakodate: [
+        { id: 'brk-hanamaru', type: '🍙 飯糰專門店', name: '花丸（函館朝市廣場內）', hours: '06:00–15:00（市場無休）', note: 'Hotel Resol 對面步行 3 分，朝市內平價手作飯糰與三明治', url: 'https://www.hakodate-asaichi.com/shop/', map: 'Hakodate Asaichi Hiroba' },
+        { id: 'brk-enmusubi', type: '🍙 飯糰專門店', name: 'えんむすび（Enmusubi）', hours: '08:00–18:00（飯糰 08:00–11:00・週日休）', note: '的場町岩海苔飯糰名店（01/16 週六營業，01/17 週日公休）', url: 'https://hakodata.com/enmusubi/', map: 'Enmusubi Hakodate' },
+        { id: 'brk-kikuyo', type: '🍚 大眾食堂', name: 'きくよ食堂 本店', hours: '冬季 06:00–13:00（無休）', note: '元祖函館巴丼（海膽・鮭魚卵・干貝）', url: 'https://hakodate-kikuyo.com/', map: 'Kikuyo Shokudo Main Store Hakodate' },
+        { id: 'brk-nibankan', type: '🍚 大眾食堂', name: '朝市食堂 二番館', hours: '08:00–14:00（無休）', note: '駅二市場 2F，平價 ¥500 海鮮丼', url: 'https://asaichi-ekini.com/shop/jujigaicoffee/', map: 'Asaichi Shokudo Nibankan Hakodate' },
+        { id: 'brk-yakizakana', type: '🐟 日式定食', name: '函館朝市烤魚定食（馬子とやすべ等）', hours: '07:00–14:00（週三休）', note: '現烤花魚定食與味噌湯', url: 'https://donburiyokocho.com/01_listShop.html', map: 'Mako and Yasube Hakodate' },
+        { id: 'brk-jujiya', type: '☕ 復古喫茶店', name: '十字屋珈琲店 函館駅二朝市店', hours: '07:00–12:00（週三休）', note: '1932 年老牌手沖咖啡', url: 'https://asaichi-ekini.com/shop/jujigaicoffee/', map: 'Jujiya Coffee Hakodate Ekini' },
+        { id: 'brk-komeda', type: '🥐 咖啡廳', name: '客美多咖啡 函館港濱店', hours: '07:00–23:00（無休）', note: '11:00 前點飲料免費送厚片吐司水煮蛋', url: 'https://www.bubu-jp.com/archives/53911', map: 'Komeda Coffee Hakodate' }
+      ]
+    };
+
+    const EXCLUDED_ITEMS = [
+      { area: '小樽', subArea: '小樽運河・堺町通', origDay: 'Day 4 (01/11)', cat: '美食', name: '小樽三角市場用餐', reason: '市場人潮過度擁擠且排隊久候', alt: '改為 Day 4 早上先去札幌場外市場「北のグルメ亭」，再搭 JR 往小樽。', url: 'https://www.kitanogurume.co.jp/zh-tw/' },
+      { area: '札幌', subArea: '薄野・狸小路', origDay: 'Day 5 (01/12)', cat: '美食', name: '札幌かに本家 薄野店', reason: '該分店已永久歇業', alt: '改排 Day 5 晚餐「札幌かに本家 札幌站前本店」（11:30–22:00）。', url: 'https://www.kani-honke.co.jp/post/%E6%9C%AD%E5%B9%8C%E3%81%8B%E3%81%AB%E6%9C%AC%E5%AE%B6-%E6%9C%AD%E5%B9%8C%E9%A7%85%E5%89%8D%E6%9C%AC%E5%BA%97' }
+    ];
+
+    const RULES_LIST = [
+      { id: 'R01', title: '修改前先確認規則（跨對話必遵守）', desc: '每次修改或討論行程前，皆須先檢視並確認本「規則」分頁內的所有現有規則，確保換對話串仍完整遵守。' },
+      { id: 'R02', title: '剔除項目留存與地區標示規則', desc: '凡從原本行程中移除的餐廳、景點或體驗，不可直接刪除，須移入「剔除」分頁保留紀錄，且須比照行程／必吃標註「城市＋小地區」。' },
+      { id: 'R03', title: '匯率 0.2255 與實際花費歸零記帳規則', desc: '日圓匯率固定使用 0.2255（活存換匯成本）；網頁版實際花費起始歸零由使用者自行輸入；記帳涵蓋機票、交通、住宿、美食、景點、伴手禮、其他 7 大分類；可選早餐亦須能獨立記錄金額並統計至總花費。' },
+      { id: 'R04', title: '早餐獨立分隔、勾選連動與五大類推薦規則', desc: '僅登別含早餐，札幌與函館皆不含早餐；住宿周邊早餐推薦移入行程分頁（涵蓋大眾食堂、日式定食、喫茶店、咖啡廳 Morning Set、飯糰專門店），依店家獨立分隔、可勾選且跨日同店名自動連動勾選。' },
+      { id: 'R05', title: '伴手禮與餐廳雙城補買規則', desc: '伴手禮商店與連鎖餐廳若札幌、函館皆有分店，兩邊城市皆須列出（六花亭、北菓樓開拓米果、LeTAO、Royce、Snaffle's、成吉思汗大黑屋），方便札幌沒買滿或效期過短時在函館補齊。' },
+      { id: 'R06', title: '營業時間與公休日完整標註規則', desc: '行程與必吃中的所有店家、景點、交通皆須標註營業時間與公休日，排程主動避開當日公休，並標明僅收現金／需預約／歇業資訊。' },
+      { id: 'R07', title: '必吃排序與行程雙向連動規則', desc: '必吃清單依「地區（城市＋小地區）＞正餐＞甜點＞宵夜」排序，附 Google 地圖連結，並與行程打卡雙向連動。' },
+      { id: 'R08', title: '防風雪風險與體力節奏規劃規則', desc: '風雪高風險／長程拉車行程（定山溪、旭川）不排最後兩天，須留防風雪緩衝日；每日下午安排咖啡廳甜點休息，零下戶外以短距離步行＋地下街／拱廊／計程車為主；體驗單項每人不超過 ¥15,000；JR 單買優於周遊券。' },
+      { id: 'R09', title: '情侶雙方偏好與避開清單規則', desc: '男方：不逛流行服飾店與時尚百貨、早起避人潮、餐廳安靜、重視早餐品質、標註吸菸區與溫泉男女湯交換時間；女友：不逛純觀賞性日式庭園、不要螃蟹吃到飽／自助餐（改單點或會席）、偏好三點分離衛浴與浴缸；已預訂之登別住宿不列於行前必預約檢核表。' },
+      { id: 'R10', title: '手機放大字體不跑版排版規則', desc: '配合手機放大字體設定，網頁版頂部標題、導覽分頁與摘要列皆採自動換行與堆疊排版，避免跑版或文字截斷。' }
     ];
 
     const CAT_STYLE = {
@@ -651,6 +690,7 @@
     let activeFoodSubArea = 'ALL';
     let foodChecked = {};
     let bookingChecked = {};
+    let breakfastChecked = {};
     let itineraryRecords = {};
     let customExpenses = {};
     let openEditorId = null;
@@ -752,6 +792,8 @@
           renderFoodFilters();
           renderFoodList();
           renderBookingList();
+      renderExcludedList();
+      renderRulesList();
           renderBudgetTab();
           setSyncStatus('ok', '☁️ 已同步');
         } else {
@@ -843,6 +885,29 @@
         });
       });
 
+      
+      [2, 3, 4, 5, 6, 7].forEach(dayNum => {
+        BREAKFAST_OPTS.sapporo.forEach(b => {
+          const rec = itineraryRecords[`d${dayNum}-${b.id}`];
+          if (rec && rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost))) {
+            const cat = rec.budgetCat || '美食';
+            if (!actByCat[cat]) actByCat[cat] = { jpy: 0, twd: 0 };
+            if (rec.currency === 'TWD') actByCat[cat].twd += Number(rec.cost);
+            else actByCat[cat].jpy += Number(rec.cost);
+          }
+        });
+      });
+      [9, 10].forEach(dayNum => {
+        BREAKFAST_OPTS.hakodate.forEach(b => {
+          const rec = itineraryRecords[`d${dayNum}-${b.id}`];
+          if (rec && rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost))) {
+            const cat = rec.budgetCat || '美食';
+            if (!actByCat[cat]) actByCat[cat] = { jpy: 0, twd: 0 };
+            if (rec.currency === 'TWD') actByCat[cat].twd += Number(rec.cost);
+            else actByCat[cat].jpy += Number(rec.cost);
+          }
+        });
+      });
       Object.values(customExpenses).forEach(exp => {
         if (exp && !isNaN(Number(exp.cost))) {
           if (exp.currency === 'TWD') totalTwd += Number(exp.cost);
@@ -852,6 +917,28 @@
 
       const doneEl = document.getElementById('itineraryDoneCount');
       if (doneEl) doneEl.textContent = `${doneItems} / ${totalItems}`;
+
+      
+      [2, 3, 4, 5, 6, 7].forEach(dayNum => {
+        BREAKFAST_OPTS.sapporo.forEach(b => {
+          const rec = itineraryRecords[`d${dayNum}-${b.id}`];
+          if (rec && rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost))) {
+            const amt = Number(rec.cost);
+            if (rec.currency === 'TWD') totalTwd += amt;
+            else totalJpy += amt;
+          }
+        });
+      });
+      [9, 10].forEach(dayNum => {
+        BREAKFAST_OPTS.hakodate.forEach(b => {
+          const rec = itineraryRecords[`d${dayNum}-${b.id}`];
+          if (rec && rec.cost !== '' && rec.cost !== null && rec.cost !== undefined && !isNaN(Number(rec.cost))) {
+            const amt = Number(rec.cost);
+            if (rec.currency === 'TWD') totalTwd += amt;
+            else totalJpy += amt;
+          }
+        });
+      });
 
       const estTwd = 40480 + Math.round(436289 * rate);
       const estEl = document.getElementById('estimatedTotalDisplay');
@@ -1056,6 +1143,91 @@
           `;
         }).join('');
 
+        const brkList = [2,3,4,5,6,7].includes(d.day) ? BREAKFAST_OPTS.sapporo : ([9,10].includes(d.day) ? BREAKFAST_OPTS.hakodate : []);
+        let brkHtml = '';
+        if (brkList.length > 0) {
+          const brkCards = brkList.map(b => {
+            const bItemId = `d${d.day}-${b.id}`;
+            const bRec = itineraryRecords[bItemId] || { cost: '', currency: 'JPY', budgetCat: '美食', note: '' };
+            const bChecked = !!breakfastChecked[b.id];
+            const bCurCat = bRec.budgetCat || '美食';
+            const bHasCost = bRec.cost !== '' && bRec.cost !== null && bRec.cost !== undefined && !isNaN(Number(bRec.cost));
+            if (bHasCost) {
+              if (bRec.currency === 'TWD') dayActTwd += Number(bRec.cost);
+              else dayActJpy += Number(bRec.cost);
+            }
+            const bActualBadge = bHasCost
+              ? `<span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">實花(${bCurCat}) ${bRec.currency === 'TWD' ? 'NT$' : '¥'}${Number(bRec.cost).toLocaleString()}</span>`
+              : '';
+            const bUrlBtn = b.url ? `<a href="${b.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[32px] px-2 py-0.5 text-[11px] font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">資訊 ↗</a>` : '';
+            const bMapBtn = b.map ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.map)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[32px] px-2 py-0.5 text-[11px] font-semibold rounded-lg bg-slate-100 text-slate-700 border border-slate-200">📍 地圖</a>` : '';
+            const bIsOpen = openEditorId === bItemId;
+            const bEditor = bIsOpen ? `
+              <div class="mt-2 pt-2 border-t border-slate-200 space-y-2 bg-slate-50/80 p-2 rounded-xl">
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">記帳分類</label>
+                    <select id="bcat-${bItemId}" class="w-full min-h-[36px] px-2 py-1 text-sm bg-white border border-slate-300 rounded-lg">
+                      ${BUDGET_CATS.map(bc => `<option value="${bc.key}" ${bCurCat === bc.key ? 'selected' : ''}>${bc.label}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">幣別</label>
+                    <select id="curr-${bItemId}" class="w-full min-h-[36px] px-2 py-1 text-sm bg-white border border-slate-300 rounded-lg">
+                      <option value="JPY" ${bRec.currency !== 'TWD' ? 'selected' : ''}>JPY ¥</option>
+                      <option value="TWD" ${bRec.currency === 'TWD' ? 'selected' : ''}>TWD $</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">實際花費</label>
+                  <input type="number" inputmode="decimal" id="cost-${bItemId}" value="${bHasCost ? bRec.cost : ''}" placeholder="金額（選填）" class="w-full min-h-[36px] px-2.5 py-1 text-sm bg-white border border-slate-300 rounded-lg" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">實記心得</label>
+                  <input type="text" id="note-${bItemId}" value="${escapeHtml(bRec.note || '')}" placeholder="心得或點了什麼" class="w-full min-h-[36px] px-2.5 py-1 text-sm bg-white border border-slate-300 rounded-lg" />
+                </div>
+                <div class="flex justify-end gap-2">
+                  <button type="button" class="cancel-rec-btn min-h-[34px] px-3 py-1 text-xs font-semibold rounded-lg bg-slate-200 text-slate-700">取消</button>
+                  <button type="button" data-save-id="${bItemId}" data-day="${d.day}" data-idx="-1" data-bname="${b.name}" class="save-rec-btn min-h-[34px] px-3.5 py-1 text-xs font-semibold rounded-lg bg-emerald-600 text-white shadow-sm">儲存並同步</button>
+                </div>
+              </div>
+            ` : '';
+            return `
+              <div class="p-2.5 rounded-xl border ${bChecked ? 'bg-emerald-50/60 border-emerald-200' : 'bg-white border-amber-200/80'} space-y-1">
+                <div class="flex items-start gap-2.5">
+                  <input type="checkbox" class="breakfast-chk mt-0.5 h-5 w-5 rounded border-slate-300 text-amber-600 focus:ring-amber-500 shrink-0 cursor-pointer"
+                    data-breakfast-id="${b.id}" data-breakfast-name="${b.name}" ${bChecked ? 'checked' : ''} />
+                  <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900">${b.type}</span>
+                      ${bActualBadge}
+                    </div>
+                    <div class="text-xs font-bold ${bChecked ? 'line-through text-slate-400' : 'text-slate-900'} mt-0.5">${b.name}</div>
+                    <div class="text-[11px] font-semibold text-amber-800 mt-0.5">🕒 ${b.hours}</div>
+                    <p class="text-[11px] text-slate-600 mt-0.5">${b.note}</p>
+                    ${bRec.note ? `<div class="mt-1 text-[11px] bg-amber-50 text-amber-900 px-2 py-1 rounded border border-amber-200">📝 ${escapeHtml(bRec.note)}</div>` : ''}
+                    <div class="mt-1.5 flex flex-wrap items-center gap-1.5">
+                      <button type="button" data-edit-id="${bItemId}" class="edit-rec-btn inline-flex items-center justify-center min-h-[32px] px-2.5 py-0.5 text-[11px] font-semibold rounded-lg ${bIsOpen ? 'bg-slate-800 text-white' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">✏️ 實記</button>
+                      ${bUrlBtn}${bMapBtn}
+                    </div>
+                    ${bEditor}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+          brkHtml = `
+            <details class="bg-amber-50/70 border border-amber-200 rounded-xl px-3 py-2" ${d.day === 3 ? 'open' : ''}>
+              <summary class="cursor-pointer text-xs font-bold text-amber-950 flex flex-wrap items-center justify-between gap-1">
+                <span>☀️ 今日可選早餐（擇一・多日連動打勾・可記帳）</span>
+                <span class="text-[11px] font-semibold text-amber-700">${brkList.length} 間推薦 ▾</span>
+              </summary>
+              <div class="mt-2 space-y-2">${brkCards}</div>
+            </details>
+          `;
+        }
+
         const hasDayAct = dayActJpy > 0 || dayActTwd > 0;
         const dayActStr = [
           dayActJpy > 0 ? `¥${dayActJpy.toLocaleString()}` : '',
@@ -1074,6 +1246,7 @@
                 ${hasDayAct ? `<div class="text-xs font-bold text-emerald-700">實花 ${dayActStr}</div>` : ''}
               </div>
             </div>
+            ${brkHtml}
             <div class="space-y-2">${itemsHtml}</div>
           </div>
         `;
@@ -1151,6 +1324,39 @@
       }).join('');
 
       container.innerHTML = groupedHtml || `<p class="text-xs text-slate-500 px-2">此地區暫無篩選項目</p>`;
+    }
+
+
+    function renderExcludedList() {
+      const container = document.getElementById('excludedList');
+      if (!container) return;
+      container.innerHTML = EXCLUDED_ITEMS.map(item => `
+        <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-rose-200 space-y-1.5">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-white">${item.area}｜${item.subArea}</span>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">${item.cat}</span>
+            <span class="text-[11px] font-semibold text-slate-500">原訂 ${item.origDay}</span>
+          </div>
+          <div class="text-sm font-bold text-slate-900 line-through">${item.name}</div>
+          <div class="text-xs text-rose-700"><span class="font-semibold">剔除原因：</span>${item.reason}</div>
+          <div class="text-xs text-emerald-800 bg-emerald-50 p-2 rounded-lg border border-emerald-200"><span class="font-semibold">替代方案：</span>${item.alt}</div>
+          ${item.url ? `<div><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">替代店官網 ↗</a></div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function renderRulesList() {
+      const container = document.getElementById('rulesList');
+      if (!container) return;
+      container.innerHTML = RULES_LIST.map(r => `
+        <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-800">${r.id}</span>
+            <h3 class="text-sm font-bold text-slate-900">${r.title}</h3>
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed">${r.desc}</p>
+        </div>
+      `).join('');
     }
 
     function renderBookingList() {
@@ -1237,7 +1443,8 @@
         const dayNum = Number(saveBtn.dataset.day);
         const idx = Number(saveBtn.dataset.idx);
         const dayObj = DAYS.find(x => x.day === dayNum);
-        const itemObj = dayObj ? dayObj.items[idx] : null;
+        const itemObj = (dayObj && idx >= 0) ? dayObj.items[idx] : null;
+        const bNameFallback = saveBtn.dataset.bname || id;
         const costEl = document.getElementById(`cost-${id}`);
         const currEl = document.getElementById(`curr-${id}`);
         const bcatEl = document.getElementById(`bcat-${id}`);
@@ -1259,7 +1466,7 @@
         syncToCloud({
           id,
           category: `${itemObj ? `D${dayNum}-${itemObj.cat}` : `D${dayNum}`}|${chosenCat}`,
-          name: itemObj ? itemObj.name : id,
+          name: itemObj ? itemObj.name : bNameFallback,
           ...updated
         });
         return;
@@ -1318,7 +1525,8 @@
         const dayNum = Number(e.target.dataset.day);
         const idx = Number(e.target.dataset.idx);
         const dayObj = DAYS.find(x => x.day === dayNum);
-        const itemObj = dayObj ? dayObj.items[idx] : null;
+        const itemObj = (dayObj && idx >= 0) ? dayObj.items[idx] : null;
+        const bNameFallback = saveBtn.dataset.bname || id;
         const prev = itineraryRecords[id] || { cost: '', currency: 'JPY', budgetCat: '', note: '' };
         const updated = { ...prev, checked: e.target.checked };
         itineraryRecords[id] = updated;
@@ -1334,7 +1542,7 @@
         syncToCloud({
           id,
           category: `${itemObj ? `D${dayNum}-${itemObj.cat}` : `D${dayNum}`}${updated.budgetCat ? '|' + updated.budgetCat : ''}`,
-          name: itemObj ? itemObj.name : id,
+          name: itemObj ? itemObj.name : bNameFallback,
           ...updated
         });
         if (linkedFood) {
@@ -1384,12 +1592,29 @@
             ...rec
           });
         }
+      } else if (e.target.classList.contains('breakfast-chk')) {
+        const bId = e.target.dataset.breakfastId;
+        const bName = e.target.dataset.breakfastName;
+        breakfastChecked[bId] = e.target.checked;
+        saveLocal();
+        renderItinerary();
+        syncToCloud({
+          id: bId,
+          category: '早餐連動',
+          name: bName,
+          checked: e.target.checked,
+          cost: '',
+          currency: 'JPY',
+          note: ''
+        });
       } else if (e.target.classList.contains('booking-chk')) {
         const id = e.target.dataset.bookingId;
         bookingChecked[id] = e.target.checked;
         const bkObj = BOOKINGS.find(b => b.id === id);
         saveLocal();
         renderBookingList();
+      renderExcludedList();
+      renderRulesList();
         syncToCloud({
           id,
           category: '預約清單',
